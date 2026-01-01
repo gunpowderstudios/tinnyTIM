@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>S.T.A.R. — Sound Therapy & Routine</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 18px; line-height: 1.35; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    .sub { opacity: .8; margin: 0 0 18px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 900px){ .grid { grid-template-columns: 1.1fr .9fr; } }
+    .card { border: 1px solid rgba(127,127,127,.25); border-radius: 14px; padding: 14px; background: rgba(127,127,127,.06); }
+    .row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 620px){ .row { grid-template-columns: 1fr 1fr; } }
+    label { font-size: 13px; opacity: .9; display: block; margin: 0 0 6px; }
+    input[type="range"] { width: 100%; }
+    input[type="number"], input[type="text"], textarea, select {
+      width: 100%; padding: 10px; border-radius: 10px; border: 1px solid rgba(127,127,127,.3); background: transparent;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .btns { display:flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    button {
+      border: 1px solid rgba(127,127,127,.35);
+      background: rgba(127,127,127,.12);
+      padding: 10px 12px; border-radius: 12px; cursor: pointer;
+      font-weight: 600;
+    }
+    button.primary { background: rgba(127,127,127,.22); }
+    button.danger { background: rgba(255,0,0,.12); border-color: rgba(255,0,0,.35); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .timer {
+      font-variant-numeric: tabular-nums;
+      font-size: 34px; font-weight: 800; letter-spacing: .5px;
+      margin: 6px 0 10px;
+    }
+    .pill { display:inline-flex; gap:8px; align-items:center; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(127,127,127,.25); opacity:.95; }
+    .muted { opacity:.8; font-size: 13px; }
+    .hr { height:1px; background: rgba(127,127,127,.2); margin: 12px 0; }
+    table { width:100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 8px; border-bottom: 1px solid rgba(127,127,127,.18); text-align: left; vertical-align: top; }
+    th { opacity: .85; font-weight: 700; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; padding: 2px 6px; border-radius: 6px; border: 1px solid rgba(127,127,127,.25); opacity:.85; }
+    .ok { color: #1a7f37; }
+    .warn { color: #b26a00; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>S.T.A.R. — Sound Therapy & Routine</h1>
+  <p class="sub">Offline sound-therapy helper + session timer + daily tracker. Stores data locally on this device only.</p>
+
+  <div class="grid">
+
+    <!-- LEFT: Player -->
+    <div class="card">
+      <div class="row">
+        <div>
+          <label>Sound type</label>
+          <select id="noiseType">
+            <option value="white">White noise</option>
+            <option value="pink">Pink-ish noise (filtered)</option>
+            <option value="brown">Brown-ish noise (filtered)</option>
+            <option value="ocean">“Ocean” (gentle movement)</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Session length (minutes)</label>
+          <input id="sessionMins" type="number" min="5" max="180" step="5" value="60" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <div>
+          <label>Volume (app level) <span class="muted">— keep comfortable</span></label>
+          <input id="vol" type="range" min="0" max="1" step="0.001" value="0.12" />
+          <div class="muted">Tip: aim for “audible but not intrusive” — often <b>just below</b> the tinnitus level.</div>
+        </div>
+
+        <div>
+          <label>Gentle movement (AM depth)</label>
+          <input id="amDepth" type="range" min="0" max="1" step="0.01" value="0.25" />
+          <div class="muted">Adds slow “whoosh” movement. Useful if steady noise feels harsh.</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row">
+        <div>
+          <label>Optional notch filter (for experimentation)</label>
+          <div class="muted">This removes a narrow band around a chosen frequency. Keep it gentle.</div>
+          <div class="row" style="margin-top:8px;">
+            <div>
+              <label>Notch ON/OFF</label>
+              <select id="notchOn">
+                <option value="off">Off</option>
+                <option value="on">On</option>
+              </select>
+            </div>
+            <div>
+              <label>Notch frequency (Hz)</label>
+              <input id="notchHz" type="number" min="80" max="12000" step="10" value="6000" />
+            </div>
+          </div>
+          <div style="margin-top:8px;">
+            <label>Notch width (Q)</label>
+            <input id="notchQ" type="range" min="1" max="40" step="0.5" value="18" />
+            <div class="muted">Higher Q = narrower notch.</div>
+          </div>
+        </div>
+
+        <div>
+          <label>Calibration (quick)</label>
+          <ol class="muted" style="margin: 0; padding-left: 18px;">
+            <li>Put on headphones.</li>
+            <li>Press <span class="kbd">Start</span> with volume low.</li>
+            <li>Increase until it’s comfortably audible.</li>
+            <li>Stop when it feels “supportive”, not dominating.</li>
+          </ol>
+          <div class="hr"></div>
+          <div class="muted">
+            If you have a “tinnitus pitch”, you can try setting the notch frequency near it — but don’t chase perfection.
+          </div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="btns">
+        <button id="startBtn" class="primary">Start</button>
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="stopBtn" disabled>Stop</button>
+        <span class="pill" id="statusPill">Status: <b id="statusText">Idle</b></span>
+      </div>
+
+      <div class="timer" id="timerText">60:00</div>
+      <div class="muted" id="timerHint">Start a session to begin the countdown.</div>
+
+      <div class="hr"></div>
+      <div class="muted">
+        Suggested routine: 60 min/day for 12 weeks (or split into two 30-min sessions). Consistency matters more than “perfect” settings.
+      </div>
+    </div>
+
+    <!-- RIGHT: Daily log + history -->
+    <div class="card">
+      <h2 style="margin:0 0 10px; font-size: 18px;">Daily check-in</h2>
+
+      <div class="row">
+        <div>
+          <label>Loudness (0–10)</label>
+          <input id="loud" type="number" min="0" max="10" step="1" value="5" />
+        </div>
+        <div>
+          <label>Annoyance / distress (0–10)</label>
+          <input id="annoy" type="number" min="0" max="10" step="1" value="4" />
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <div>
+          <label>Sleep (hours)</label>
+          <input id="sleep" type="number" min="0" max="16" step="0.5" value="7" />
+        </div>
+        <div>
+          <label>Stress (0–10)</label>
+          <input id="stress" type="number" min="0" max="10" step="1" value="4" />
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label>Notes (optional)</label>
+        <textarea id="notes" placeholder="Anything relevant? caffeine, alcohol, neck tension, loud day, good day, etc."></textarea>
+      </div>
+
+      <div class="btns" style="margin-top:10px;">
+        <button id="saveLogBtn">Save today’s log</button>
+        <button id="exportBtn">Export CSV</button>
+        <button id="clearBtn" class="danger">Clear all data</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="muted" id="summaryText">No logs yet.</div>
+
+      <div style="margin-top:10px;">
+        <table id="logTable" aria-label="Log history">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Loud</th>
+              <th>Annoy</th>
+              <th>Sleep</th>
+              <th>Stress</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="hr"></div>
+      <div class="muted">
+        Privacy: everything stays in your browser (localStorage). If you clear browser data, logs will be lost.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ============ Utilities ============ */
+const $ = (id) => document.getElementById(id);
+const pad2 = (n) => String(n).padStart(2, '0');
+const todayISO = () => new Date().toISOString().slice(0, 10);
+
+function clamp(num, min, max){ return Math.min(max, Math.max(min, num)); }
+
+/* ============ Local storage for logs ============ */
+const STORE_KEY = "STAR_LOGS_V1";
+
+function loadLogs(){
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return [];
+    const data = JSON.parse(raw);
+    if(!Array.isArray(data)) return [];
+    return data;
+  } catch { return []; }
+}
+
+function saveLogs(logs){
+  localStorage.setItem(STORE_KEY, JSON.stringify(logs));
+}
+
+/* ============ Audio Engine ============ */
+let audioCtx = null;
+let isRunning = false;
+let isPaused = false;
+
+let noiseNode = null;
+let gainNode = null;
+let masterGain = null;
+let notchFilter = null;
+
+let amOsc = null;
+let amGain = null;
+
+function ensureAudio(){
+  if(audioCtx) return;
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioContext();
+
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = parseFloat($("vol").value);
+
+  // Notch filter node (disabled by default by setting frequency/Q but bypassed via routing)
+  notchFilter = audioCtx.createBiquadFilter();
+  notchFilter.type = "notch";
+  notchFilter.frequency.value = parseFloat($("notchHz").value);
+  notchFilter.Q.value = parseFloat($("notchQ").value);
+
+  // AM (gentle movement)
+  amOsc = audioCtx.createOscillator();
+  amOsc.type = "sine";
+  amOsc.frequency.value = 0.12; // very slow movement
+  amGain = audioCtx.createGain();
+  amGain.gain.value = parseFloat($("amDepth").value);
+
+  // GainNode that will be modulated
+  gainNode = audioCtx.createGain();
+  gainNode.gain.value = 1.0;
+
+  // Connect AM: osc -> amGain -> gainNode.gain
+  amOsc.connect(amGain);
+  amGain.connect(gainNode.gain);
+
+  // Output chain (noise -> (optional notch) -> gainNode -> master -> destination)
+  // We'll swap routing depending on notch on/off.
+  masterGain.connect(audioCtx.destination);
+
+  amOsc.start();
+}
+
+function createNoiseSource(type){
+  // Use a ScriptProcessorNode for broad browser compatibility.
+  // (AudioWorklet is nicer but more code.)
+  const bufferSize = 4096;
+  const node = audioCtx.createScriptProcessor(bufferSize, 1, 1);
+
+  // State for pink/brown filters
+  let b0=0, b1=0, b2=0, b3=0, b4=0, b5=0, b6=0;
+  let lastOut = 0;
+
+  node.onaudioprocess = (e) => {
+    const out = e.outputBuffer.getChannelData(0);
+
+    for(let i=0; i<out.length; i++){
+      const white = Math.random() * 2 - 1;
+
+      if(type === "white"){
+        out[i] = white;
+      } else if(type === "pink"){
+        // Paul Kellet pink noise approximation
+        b0 = 0.99886 * b0 + white * 0.0555179;
+        b1 = 0.99332 * b1 + white * 0.0750759;
+        b2 = 0.96900 * b2 + white * 0.1538520;
+        b3 = 0.86650 * b3 + white * 0.3104856;
+        b4 = 0.55000 * b4 + white * 0.5329522;
+        b5 = -0.7616 * b5 - white * 0.0168980;
+        const pink = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+        b6 = white * 0.115926;
+        out[i] = pink * 0.11; // scale down
+      } else if(type === "brown"){
+        // Brown(ian) noise: integrate white noise
+        lastOut = (lastOut + (0.02 * white));
+        lastOut = clamp(lastOut, -1, 1);
+        out[i] = lastOut * 3.5; // scale
+      } else if(type === "ocean"){
+        // "Ocean": brown-ish with extra gentle randomness (AM already adds movement)
+        lastOut = (lastOut + (0.018 * white));
+        lastOut = clamp(lastOut, -1, 1);
+        const swell = (Math.random() * 2 - 1) * 0.02;
+        out[i] = (lastOut + swell) * 3.2;
+      } else {
+        out[i] = white;
+      }
+    }
+  };
+
+  return node;
+}
+
+function connectRouting(){
+  if(!noiseNode) return;
+
+  // Disconnect all first
+  try { noiseNode.disconnect(); } catch {}
+  try { notchFilter.disconnect(); } catch {}
+  try { gainNode.disconnect(); } catch {}
+
+  const notchOn = $("notchOn").value === "on";
+
+  if(notchOn){
+    noiseNode.connect(notchFilter);
+    notchFilter.connect(gainNode);
+  } else {
+    noiseNode.connect(gainNode);
+  }
+  gainNode.connect(masterGain);
+}
+
+function startAudio(){
+  ensureAudio();
+  const type = $("noiseType").value;
+  noiseNode = createNoiseSource(type);
+  connectRouting();
+
+  isRunning = true;
+  isPaused = false;
+
+  setStatus("Running");
+}
+
+function stopAudio(){
+  if(!audioCtx) return;
+
+  try { if(noiseNode) noiseNode.disconnect(); } catch {}
+  try { if(noiseNode) noiseNode.onaudioprocess = null; } catch {}
+
+  noiseNode = null;
+  isRunning = false;
+  isPaused = false;
+
+  setStatus("Idle");
+}
+
+function pauseAudio(){
+  if(!audioCtx) return;
+  if(!isRunning) return;
+  // Suspend context
+  audioCtx.suspend();
+  isPaused = true;
+  setStatus("Paused");
+}
+
+function resumeAudio(){
+  if(!audioCtx) return;
+  if(!isRunning) return;
+  audioCtx.resume();
+  isPaused = false;
+  setStatus("Running");
+}
+
+/* ============ Timer ============ */
+let totalSeconds = 60 * 60;
+let remainingSeconds = totalSeconds;
+let timerInterval = null;
+
+function setTimerFromInput(){
+  const mins = parseInt($("sessionMins").value || "60", 10);
+  const m = clamp(mins, 5, 180);
+  $("sessionMins").value = m;
+  totalSeconds = m * 60;
+  remainingSeconds = totalSeconds;
+  renderTimer();
+}
+
+function renderTimer(){
+  const mm = Math.floor(remainingSeconds / 60);
+  const ss = remainingSeconds % 60;
+  $("timerText").textContent = `${pad2(mm)}:${pad2(ss)}`;
+}
+
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if(!isRunning || isPaused) return;
+    remainingSeconds = Math.max(0, remainingSeconds - 1);
+    renderTimer();
+
+    if(remainingSeconds === 0){
+      // Auto stop
+      stopSession(true);
+    }
+  }, 1000);
+}
+
+function stopTimer(){
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+/* ============ UI state ============ */
+function setStatus(text){
+  $("statusText").textContent = text;
+  $("timerHint").textContent =
+    text === "Running" ? "Keep it comfortable. You can pause anytime."
+    : text === "Paused" ? "Paused. Resume when ready."
+    : "Start a session to begin the countdown.";
+}
+
+function setButtons(){
+  $("startBtn").disabled = isRunning && !isPaused;
+  $("pauseBtn").disabled = !isRunning;
+  $("stopBtn").disabled = !isRunning;
+
+  $("pauseBtn").textContent = isPaused ? "Resume" : "Pause";
+}
+
+function updateAudioParams(){
+  if(!audioCtx) return;
+  if(masterGain) masterGain.gain.value = parseFloat($("vol").value);
+
+  if(amGain) amGain.gain.value = parseFloat($("amDepth").value);
+
+  if(notchFilter){
+    notchFilter.frequency.value = parseFloat($("notchHz").value);
+    notchFilter.Q.value = parseFloat($("notchQ").value);
+  }
+  // reroute if notch on/off changed while playing
+  if(isRunning && noiseNode) connectRouting();
+}
+
+/* ============ Session controls ============ */
+function startSession(){
+  // iOS/Safari sometimes requires resume on user gesture
+  ensureAudio();
+  if(audioCtx.state === "suspended") audioCtx.resume();
+
+  setTimerFromInput();
+  remainingSeconds = totalSeconds;
+
+  startAudio();
+  startTimer();
+  setButtons();
+}
+
+function stopSession(auto=false){
+  stopAudio();
+  stopTimer();
+  setButtons();
+
+  if(auto){
+    $("timerHint").textContent = "Session complete ✅ Consider logging how today felt.";
+  } else {
+    $("timerHint").textContent = "Stopped. You can restart anytime.";
+  }
+}
+
+/* ============ Logs UI ============ */
+function renderLogs(){
+  const logs = loadLogs().sort((a,b) => (b.date > a.date ? 1 : -1));
+  const tbody = $("logTable").querySelector("tbody");
+  tbody.innerHTML = "";
+
+  for(const l of logs){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${escapeHtml(l.date)}</td>
+      <td>${escapeHtml(String(l.loud))}</td>
+      <td>${escapeHtml(String(l.annoy))}</td>
+      <td>${escapeHtml(String(l.sleep))}</td>
+      <td>${escapeHtml(String(l.stress))}</td>
+      <td>${escapeHtml(l.notes || "")}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  if(logs.length === 0){
+    $("summaryText").textContent = "No logs yet.";
+    return;
+  }
+
+  // Basic summary (last 7 logs)
+  const last7 = logs.slice(0, 7);
+  const avg = (k) => last7.reduce((s,x)=>s + Number(x[k]||0), 0) / last7.length;
+
+  const avgL = avg("loud").toFixed(1);
+  const avgA = avg("annoy").toFixed(1);
+  const avgS = avg("sleep").toFixed(1);
+  const avgSt = avg("stress").toFixed(1);
+
+  $("summaryText").innerHTML =
+    `Last ${last7.length} log(s) average — Loudness: <b>${avgL}</b>, Annoyance: <b>${avgA}</b>, Sleep: <b>${avgS}</b>h, Stress: <b>${avgSt}</b>.`;
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[s]));
+}
+
+function saveTodayLog(){
+  const logs = loadLogs();
+  const d = todayISO();
+
+  const entry = {
+    date: d,
+    loud: clamp(parseInt($("loud").value || "0", 10), 0, 10),
+    annoy: clamp(parseInt($("annoy").value || "0", 10), 0, 10),
+    sleep: clamp(parseFloat($("sleep").value || "0"), 0, 16),
+    stress: clamp(parseInt($("stress").value || "0", 10), 0, 10),
+    notes: ($("notes").value || "").trim()
+  };
+
+  // Upsert by date
+  const idx = logs.findIndex(x => x.date === d);
+  if(idx >= 0) logs[idx] = entry;
+  else logs.push(entry);
+
+  saveLogs(logs);
+  renderLogs();
+
+  $("notes").value = "";
+  $("summaryText").insertAdjacentHTML("beforeend", ` <span class="ok">Saved.</span>`);
+}
+
+function exportCSV(){
+  const logs = loadLogs().sort((a,b) => (a.date > b.date ? 1 : -1));
+  if(logs.length === 0){
+    alert("No logs to export yet.");
+    return;
+  }
+
+  const header = ["date","loudness","annoyance","sleep_hours","stress","notes"];
+  const rows = logs.map(l => [
+    l.date,
+    l.loud,
+    l.annoy,
+    l.sleep,
+    l.stress,
+    (l.notes || "").replace(/\r?\n/g, " ").replace(/"/g, '""')
+  ]);
+
+  const csv = [header.join(","), ...rows.map(r => r.map(v => `"${v}"`).join(","))].join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `STAR_logs_${todayISO()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+function clearAll(){
+  const ok = confirm("Are you sure? This will permanently delete all saved logs from this browser.");
+  if(!ok) return;
+  localStorage.removeItem(STORE_KEY);
+  renderLogs();
+  alert("Cleared.");
+}
+
+/* ============ Event wiring ============ */
+$("sessionMins").addEventListener("change", () => { setTimerFromInput(); });
+$("vol").addEventListener("input", updateAudioParams);
+$("amDepth").addEventListener("input", updateAudioParams);
+$("noiseType").addEventListener("change", () => {
+  // If currently running, restart noise type cleanly
+  if(isRunning){
+    stopAudio();
+    startAudio();
+    setButtons();
+  }
+});
+$("notchOn").addEventListener("change", updateAudioParams);
+$("notchHz").addEventListener("change", updateAudioParams);
+$("notchQ").addEventListener("input", updateAudioParams);
+
+$("startBtn").addEventListener("click", () => {
+  if(isRunning && isPaused){
+    resumeAudio();
+  } else if(!isRunning){
+    startSession();
+  }
+  setButtons();
+});
+
+$("pauseBtn").addEventListener("click", () => {
+  if(!isRunning) return;
+  if(isPaused) resumeAudio();
+  else pauseAudio();
+  setButtons();
+});
+
+$("stopBtn").addEventListener("click", () => stopSession(false));
+
+$("saveLogBtn").addEventListener("click", saveTodayLog);
+$("exportBtn").addEventListener("click", exportCSV);
+$("clearBtn").addEventListener("click", clearAll);
+
+/* ============ Init ============ */
+setTimerFromInput();
+renderLogs();
+setButtons();
+</script>
+</body>
+</html>
