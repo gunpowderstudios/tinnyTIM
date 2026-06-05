@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>tinnyTIM - Free Tinnitus Habituation & Sound Therapy App</title>
 <meta name="description" content="Free tinnitus habituation app with sound therapy, daily tips, hope and guidance. Learn how tinnitus habituation works, track your progress and discover that recovery is possible.">
-<meta property="og:title" content="tinny T.I.M. - Tinnitus Is Manageable">
+<meta property="og:title" content="tinnyTIM - Tinnitus Is Manageable">
 <meta property="og:description" content="Free tinnitus habituation app with sound therapy, daily tips and practical guidance.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://gunpowderstudios.github.io/tinnyTIM/">
@@ -493,8 +493,8 @@ input[type=range]{
   <header class="hero">
     <div class="logo">tinnyTIM</div>
     <div class="tagline">Tinnitus Is Manageable</div>
-    <div class="mini">Track your habituation, not your tinnitus.</div>
-    <p style="max-width:650px;margin:12px auto 0;color:#c8cedd;font-size:14px;">tinnyT.I.M. (Tinnitus Is Manageable) is a free tinnitus habituation and sound therapy app designed to help people understand tinnitus recovery, reduce fear and track their habituation journey.</p>
+    <div class="mini">Hope, sound therapy and a gentle guide to habituation.</div>
+    <p style="max-width:650px;margin:12px auto 0;color:#c8cedd;font-size:14px;">tinnyTIM (Tinnitus Is Manageable) is a free tinnitus habituation and sound therapy app designed to help people understand tinnitus recovery, reduce fear and track their habituation journey.</p>
   </header>
 
   <nav class="tabs" aria-label="App sections">
@@ -595,24 +595,25 @@ input[type=range]{
           <option value="off" selected>Off</option>
           <option value="on">On</option>
         </select>
-        <div class="hint">Optional Tinnitus Filter
+        <div class="hint">
+<p><strong>Optional Tinnitus Filter</strong></p>
 
-This feature reduces a small part of the sound that matches your tinnitus pitch.
+<p>This feature reduces a small part of the sound that matches your tinnitus pitch.</p>
 
-For example, my tinnitus sounds like a very high-pitched hiss, so I would use a setting around 10,000 Hz.
+<p>For example, my tinnitus sounds like a very high-pitched hiss, so I would use a setting around 10,000 Hz.</p>
 
-Not sure what your tinnitus pitch is?
+<p>Not sure what your tinnitus pitch is?</p>
 
-Try searching online for "My Tinnitus Notch" or "Tinnitus Pitch Matching". These free tools can help you estimate the frequency of your tinnitus.
+<p>Try searching online for "My Tinnitus Notch" or "Tinnitus Pitch Matching". These free tools can help you estimate the frequency of your tinnitus.</p>
 
-Some people find this helpful as part of sound therapy, while others notice little difference.
+<p>Some people find this helpful as part of sound therapy, while others notice little difference.</p>
 
-Experimental — leave it switched off if you are unsure.
+<p>Experimental — leave it switched off if you are unsure.</p>
 </div>
-      </div>
+</div>
 
       <div class="control" id="notchWrap" style="display:none">
-        <label for="notchHz">Notch frequency (Hz)</label>
+        <label for="notchHz">Your tinnitus pitch (Hz)</label>
         <input id="notchHz" type="number" min="80" max="12000" step="10" value="6000">
       </div>
     </div>
@@ -673,7 +674,7 @@ Experimental — leave it switched off if you are unsure.
     </div>
 
     <div class="soft-card">
-      <h3>The T.I.M. idea</h3>
+      <h3>The tinnyTIM idea</h3>
       <p><strong>The goal is not silence.</strong></p>
       <p><strong>The goal is freedom.</strong></p>
       <p>Use this app as a gentle reminder that progress is possible, even on louder days.</p>
@@ -691,13 +692,14 @@ Experimental — leave it switched off if you are unsure.
       Inspired by tinnitus habituation and recovery concepts, and by the experiences of people who have successfully learned to live well with tinnitus.
     </p>
     <p>
-      The wording, level descriptions and app design used in T.I.M. are original adaptations created for educational and self-help purposes.
+      The wording, level descriptions and app design used in tinnyTIM are original adaptations created for educational and self-help purposes.
     </p>
   </div>
 
   <div class="footer">
-    This app is FREE to use and share. Your data is saved only on this (your) device.
-  </div>
+  tinnyTIM v6.0<br>
+  This app is FREE to use and share. Your data is saved only on this device.
+</div>
 
 </div>
 
@@ -761,7 +763,7 @@ const LEVELS = [
   }
 ];
 
-const STORE = "tim_v2_habituation_sound";
+const STORE = "tinnyTIM_v6";
 
 function loadState(){
   try{
