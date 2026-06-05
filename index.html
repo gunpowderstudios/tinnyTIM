@@ -2,476 +2,1072 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>T.I.M. — Tinnitus Is Manageable</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0f1117;
-  --panel:#181c26;
-  --panel2:#1f2533;
-  --line:#343b50;
+  --bg2:#181c26;
+  --bg3:#222839;
+  --card:#171b25;
+  --line:#343a4d;
   --text:#e8eaf0;
   --muted:#9aa0b5;
-  --soft:#b9c0d2;
+  --soft:#c8cedd;
   --orange:#EF9F27;
-  --orange2:#BA7517;
+  --orange2:#b87415;
   --green:#5DCAA5;
   --green2:#1D9E75;
-  --danger:#ff8a8a;
+  --red:#dc6060;
   --radius:18px;
 }
-html{scroll-behavior:smooth}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  -webkit-text-size-adjust:100%;
+}
+
 body{
+  margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  background:radial-gradient(700px 500px at 50% -20%, #222b3d 0%, var(--bg) 55%);
+  background:
+    radial-gradient(900px 500px at 50% -10%, #28314a 0%, var(--bg) 58%);
   color:var(--text);
-  font-size:16px;
   line-height:1.5;
-  padding:18px 14px 34px;
 }
-.app{width:min(640px,100%);margin:0 auto}
-.hero{text-align:center;margin:8px 0 18px}
-.hero h1{font-size:48px;line-height:1;color:var(--orange);font-weight:750;letter-spacing:-1px}
-.hero p{font-size:18px;color:var(--soft);margin-top:6px}
-.hero .small{font-size:14px;color:var(--muted);margin-top:4px}
-.note{
-  background:linear-gradient(180deg, rgba(29,158,117,.14), rgba(29,158,117,.06));
-  border:1px solid rgba(93,202,165,.55);
-  border-radius:var(--radius);
-  padding:15px;
-  margin:0 0 14px;
-  color:#bff5e2;
+
+.app{
+  width:min(760px,100%);
+  margin:0 auto;
+  padding:18px 14px 42px;
 }
-.note strong{color:var(--green);font-weight:750}
+
+.hero{
+  text-align:center;
+  padding:10px 0 16px;
+}
+
+.logo{
+  font-size:46px;
+  font-weight:800;
+  letter-spacing:-1px;
+  color:var(--orange);
+  line-height:1;
+}
+
+.tagline{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:16px;
+}
+
+.mini{
+  margin-top:8px;
+  font-size:13px;
+  color:#778098;
+}
+
 .tabs{
-  position:sticky;top:0;z-index:5;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:6px;
-  background:rgba(15,17,23,.92);
-  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
   padding:8px 0 12px;
-  margin-bottom:4px;
+  background:linear-gradient(180deg, rgba(15,17,23,.98), rgba(15,17,23,.86));
+  backdrop-filter:blur(8px);
 }
+
 .tab{
   border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--muted);
-  padding:12px 8px;
+  background:var(--bg2);
+  color:var(--soft);
   border-radius:999px;
-  font-size:15px;
-  font-weight:750;
+  padding:12px 7px;
+  font-size:14px;
+  font-weight:700;
   cursor:pointer;
+  min-height:46px;
 }
-.tab.active{background:var(--orange);color:#111;border-color:var(--orange)}
-.pane{display:none}.pane.active{display:block}
-.section-title{font-size:22px;margin:14px 0 5px;letter-spacing:-.2px}
-.intro{color:var(--muted);font-size:14px;margin-bottom:14px}
-.level-card{
-  background:var(--panel);
-  border:1px solid var(--line);
+
+.tab.active{
+  background:var(--orange);
+  color:#111;
+  border-color:var(--orange);
+}
+
+.pane{
+  display:none;
+}
+
+.pane.active{
+  display:block;
+}
+
+.notice{
+  background:rgba(29,158,117,.1);
+  border:1px solid rgba(93,202,165,.48);
+  color:#b9f5df;
   border-radius:var(--radius);
-  margin-bottom:10px;
+  padding:15px;
+  margin:8px 0 16px;
+  font-size:14px;
+}
+
+.notice strong{
+  color:#5DCAA5;
+}
+
+.section-title{
+  font-size:21px;
+  margin:18px 0 8px;
+  letter-spacing:-.2px;
+}
+
+.section-sub{
+  color:var(--muted);
+  font-size:14px;
+  margin:0 0 14px;
+}
+
+.current-card{
+  display:none;
+  background:linear-gradient(180deg, rgba(239,159,39,.16), rgba(239,159,39,.06));
+  border:1px solid rgba(239,159,39,.55);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.current-card.show{
+  display:block;
+}
+
+.current-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.current-emoji{
+  font-size:34px;
+}
+
+.current-title{
+  font-size:19px;
+  font-weight:800;
+  color:var(--orange);
+}
+
+.current-copy{
+  margin:10px 0 0;
+  color:var(--soft);
+  font-size:14px;
+}
+
+.progress-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:14px;
+}
+
+.progress-box{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:14px;
+  padding:10px 8px;
+  text-align:center;
+}
+
+.progress-label{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.progress-value{
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+  margin-top:2px;
+}
+
+.level-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.level-card{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:var(--radius);
   overflow:hidden;
 }
+
+.level-card.selected{
+  border-color:var(--orange);
+  box-shadow:0 0 0 1px rgba(239,159,39,.28);
+}
+
 .level-head{
   width:100%;
   display:flex;
-  gap:12px;
   align-items:center;
-  justify-content:space-between;
-  padding:14px;
-  background:transparent;
-  color:var(--text);
+  gap:12px;
   border:0;
   text-align:left;
+  background:transparent;
+  color:var(--text);
+  padding:16px;
   cursor:pointer;
+  min-height:72px;
 }
-.level-left{display:flex;gap:12px;align-items:center;min-width:0}
-.emoji{font-size:28px;width:36px;text-align:center;flex:0 0 auto}
-.level-name{font-size:17px;font-weight:800;line-height:1.15}
-.level-short{font-size:13px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:390px}
-.chev{color:var(--muted);font-size:22px;transition:.2s;flex:0 0 auto}
-.level-card.open .chev{transform:rotate(180deg)}
-.level-card.selected{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange) inset}
-.level-card.selected .level-head{background:rgba(239,159,39,.08)}
-.level-body{display:none;padding:0 14px 14px;color:var(--soft)}
-.level-card.open .level-body{display:block}
-.level-body p{margin:9px 0}
-.reflection{
-  background:var(--panel2);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:12px;
-  color:#dce1ee;
-  margin-top:10px;
+
+.level-emoji{
+  font-size:30px;
+  width:42px;
+  flex:0 0 42px;
+  text-align:center;
 }
-.pick{
+
+.level-main{
+  flex:1;
+  min-width:0;
+}
+
+.level-title{
+  font-size:17px;
+  font-weight:800;
+}
+
+.level-short{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.chev{
+  color:var(--muted);
+  font-size:22px;
+  transform:rotate(0deg);
+  transition:.2s;
+}
+
+.level-card.open .chev{
+  transform:rotate(180deg);
+}
+
+.level-body{
+  display:none;
+  padding:0 16px 16px 70px;
+  color:var(--soft);
+  font-size:14px;
+}
+
+.level-card.open .level-body{
+  display:block;
+}
+
+.level-body p{
+  margin:0 0 10px;
+}
+
+.pick-btn{
+  display:block;
   width:100%;
   margin-top:12px;
   border:0;
-  border-radius:13px;
+  border-radius:999px;
+  padding:13px 14px;
   background:var(--orange);
   color:#111;
-  padding:13px 14px;
-  font-weight:850;
-  font-size:16px;
+  font-size:15px;
+  font-weight:800;
   cursor:pointer;
 }
-.summary{
-  display:none;
-  background:var(--panel);
-  border:1px solid var(--orange);
-  border-radius:var(--radius);
-  padding:15px;
-  margin:12px 0 16px;
+
+.pick-btn.chosen{
+  background:var(--green2);
+  color:white;
 }
-.summary.show{display:block}
-.summary h2{color:var(--orange);font-size:20px;margin-bottom:5px}
-.summary p{color:var(--soft);font-size:14px;margin:4px 0}
-.bar{height:8px;background:var(--panel2);border-radius:999px;overflow:hidden;margin:12px 0 7px}
-.fill{height:100%;background:var(--orange);width:0%;transition:.35s}
-.journey-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
-.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
-.stat .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
-.stat .value{font-size:18px;color:var(--text);font-weight:850;margin-top:2px}
-.reminder{
-  background:rgba(239,159,39,.09);
-  border:1px solid rgba(239,159,39,.35);
-  border-radius:var(--radius);
-  padding:14px;
-  margin-top:14px;
-  color:#ffe0b0;
-}
-.sound-card{
-  background:var(--panel);
+
+.soft-card{
+  background:var(--bg2);
   border:1px solid var(--line);
   border-radius:var(--radius);
-  padding:15px;
-  margin-bottom:12px;
+  padding:16px;
+  margin:12px 0;
 }
-.field{margin-bottom:14px}
-label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;font-weight:650}
-select,input[type=number]{
-  width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);
-  border-radius:13px;padding:12px;font-size:16px;font-family:inherit;
+
+.soft-card h3{
+  margin:0 0 10px;
+  color:var(--orange);
 }
-.range-row{display:flex;gap:10px;align-items:center}
-input[type=range]{width:100%;accent-color:var(--orange)}
-.rval{min-width:44px;text-align:right;color:var(--orange);font-weight:850;font-size:14px}
-.hint{font-size:13px;color:var(--muted);line-height:1.4;margin-top:6px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.timer{text-align:center;font-size:54px;line-height:1;font-variant-numeric:tabular-nums;color:var(--orange);font-weight:750;margin:14px 0 10px}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.controls .wide{grid-column:1/-1}
-.btn{border:0;border-radius:14px;padding:14px 12px;font-size:16px;font-weight:850;cursor:pointer}
-.btn-primary{background:var(--orange);color:#111}.btn-secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.status{text-align:center;color:var(--muted);font-size:14px}
-.dot{display:inline-block;width:8px;height:8px;border-radius:99px;background:#687087;margin-right:6px}.dot.on{background:var(--green)}.dot.pause{background:var(--orange)}
-.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;line-height:1.5}
-@media(max-width:420px){
-  body{padding-left:12px;padding-right:12px}
-  .hero h1{font-size:44px}
-  .level-short{max-width:235px}
-  .journey-stats{grid-template-columns:1fr}
+
+.soft-card p{
+  color:var(--soft);
+  margin:0 0 10px;
+  font-size:14px;
+}
+
+.control{
+  margin:14px 0;
+}
+
+.control label{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+select,
+input[type=number]{
+  width:100%;
+  background:var(--bg3);
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:14px;
+  min-height:48px;
+  padding:11px 12px;
+  font-size:16px;
+}
+
+.range-line{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+input[type=range]{
+  width:100%;
+  accent-color:var(--orange);
+}
+
+.range-val{
+  min-width:48px;
+  text-align:right;
+  color:var(--orange);
+  font-weight:800;
+  font-size:14px;
+}
+
+.hint{
+  color:#7f879d;
+  font-size:12px;
+  margin-top:6px;
+}
+
+.timer{
+  font-size:54px;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:1px;
+  color:var(--orange);
+  text-align:center;
+  margin:14px 0 8px;
+  font-weight:800;
+  line-height:1;
+}
+
+.status{
+  display:flex;
+  justify-content:center;
+  margin-bottom:14px;
+}
+
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:var(--muted);
+  background:var(--bg3);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:13px;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#697188;
+}
+
+.dot.running{background:var(--green)}
+.dot.paused{background:var(--orange)}
+
+.btn-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.action{
+  border:0;
+  border-radius:14px;
+  min-height:48px;
+  padding:11px 10px;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.action.primary{
+  background:var(--orange);
+  color:#111;
+}
+
+.action.secondary{
+  background:var(--bg3);
+  color:var(--text);
+  border:1px solid var(--line);
+}
+
+.action:disabled{
+  opacity:.42;
+  cursor:not-allowed;
+}
+
+.quick-times{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:8px;
+}
+
+.time-btn{
+  background:var(--bg3);
+  color:var(--soft);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 4px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.time-btn.active{
+  background:rgba(239,159,39,.18);
+  color:var(--orange);
+  border-color:var(--orange);
+}
+
+.disclaimer{
+  color:#7f879d;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.footer{
+  margin-top:20px;
+  color:#737b91;
+  text-align:center;
+  font-size:12px;
+}
+
+@media (max-width:420px){
+  .app{padding-left:12px;padding-right:12px}
+  .logo{font-size:42px}
+  .tab{font-size:13px}
+  .level-body{padding-left:16px}
+  .progress-row{grid-template-columns:1fr}
   .timer{font-size:48px}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
+
   <header class="hero">
-    <h1>T.I.M.</h1>
-    <p>Tinnitus Is Manageable</p>
-    <p class="small">Track habituation, not tinnitus.</p>
+    <div class="logo">T.I.M.</div>
+    <div class="tagline">Tinnitus Is Manageable</div>
+    <div class="mini">Track your habituation, not your tinnitus.</div>
   </header>
 
-  <section class="note">
-    <strong>A note from Tim</strong><br>
-    I used to find tinnitus unbearable. Today I still hear it, but most of the time I simply don't care about it. Habituation is real — and it is possible.
-  </section>
-
-  <nav class="tabs" aria-label="App tabs">
-    <button class="tab active" data-tab="journey">🧭 Journey</button>
-    <button class="tab" data-tab="sound">🎧 Sound Therapy</button>
+  <nav class="tabs" aria-label="App sections">
+    <button class="tab active" data-tab="journey">Journey</button>
+    <button class="tab" data-tab="sound">Sound</button>
+    <button class="tab" data-tab="hope">Hope</button>
   </nav>
 
-  <main>
-    <section id="pane-journey" class="pane active">
-      <div id="summary" class="summary" aria-live="polite">
-        <h2 id="summaryTitle">Your current level</h2>
-        <p id="summaryDesc"></p>
-        <div class="bar"><div id="summaryFill" class="fill"></div></div>
-        <p id="summaryProgress"></p>
-        <div class="journey-stats">
-          <div class="stat"><div class="label">Started</div><div class="value" id="startVal">—</div></div>
-          <div class="stat"><div class="label">Today</div><div class="value" id="todayVal">—</div></div>
-          <div class="stat"><div class="label">Change</div><div class="value" id="changeVal">—</div></div>
+  <section id="journey" class="pane active">
+
+    <div class="notice">
+      <strong>One gentle check-in.</strong><br>
+      Choose the level that feels most true today. This is not about loudness — it is about how much tinnitus is affecting your life.
+    </div>
+
+    <div id="currentCard" class="current-card" aria-live="polite">
+      <div class="current-top">
+        <div id="currentEmoji" class="current-emoji">🙂</div>
+        <div>
+          <div class="current-title" id="currentTitle">Level 4 — Improving</div>
+          <div class="current-copy" id="currentOneLine">You are moving forward.</div>
         </div>
       </div>
 
-      <h2 class="section-title">Where are you today?</h2>
-      <p class="intro">Tap a level to expand it. Choose the one that feels most honest today. It is about how much tinnitus bothers you — not how loud it is.</p>
-      <div id="levelList"></div>
-
-      <div class="reminder">
-        <strong>The goal is not silence.</strong><br>
-        The goal is freedom — thinking about tinnitus less, checking it less, and living your life more.
-      </div>
-    </section>
-
-    <section id="pane-sound" class="pane">
-      <h2 class="section-title">Sound Therapy</h2>
-      <p class="intro">Use gentle masking or background sound. Keep it comfortable — audible, but not dominating.</p>
-
-      <div class="sound-card">
-        <div class="field">
-          <label for="noiseType">Sound type</label>
-          <select id="noiseType">
-            <option value="pink" selected>Pink noise — softer</option>
-            <option value="white">White noise — brighter</option>
-            <option value="brown">Brown noise — deep and warm</option>
-            <option value="ocean">Ocean movement</option>
-          </select>
+      <div class="progress-row">
+        <div class="progress-box">
+          <div class="progress-label">Started</div>
+          <div id="startedVal" class="progress-value">—</div>
         </div>
-
-        <div class="field">
-          <label for="mins">Session length</label>
-          <select id="mins">
-            <option value="15">15 minutes</option>
-            <option value="30">30 minutes</option>
-            <option value="45">45 minutes</option>
-            <option value="60" selected>60 minutes</option>
-            <option value="90">90 minutes</option>
-          </select>
+        <div class="progress-box">
+          <div class="progress-label">Today</div>
+          <div id="todayVal" class="progress-value">—</div>
         </div>
-
-        <div class="field">
-          <label for="vol">Volume — usually just below tinnitus</label>
-          <div class="range-row">
-            <input id="vol" type="range" min="0" max="1" step="0.01" value="0.12">
-            <span class="rval" id="volOut">12%</span>
-          </div>
-          <p class="hint">Try not to chase a perfect setting. Comfortable and consistent is better.</p>
-        </div>
-
-        <div class="field">
-          <label for="moveDepth">Gentle movement</label>
-          <div class="range-row">
-            <input id="moveDepth" type="range" min="0" max="1" step="0.01" value="0.25">
-            <span class="rval" id="moveOut">25%</span>
-          </div>
+        <div class="progress-box">
+          <div class="progress-label">Change</div>
+          <div id="changeVal" class="progress-value">—</div>
         </div>
       </div>
+    </div>
 
-      <div class="sound-card">
-        <div class="two">
-          <div class="field">
-            <label for="notchOn">Optional notch</label>
-            <select id="notchOn">
-              <option value="off" selected>Off</option>
-              <option value="on">On</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="notchHz">Frequency</label>
-            <input id="notchHz" type="number" min="80" max="12000" step="10" value="6000">
-          </div>
-        </div>
-        <p class="hint">Experimental. Don't obsess over matching your tinnitus pitch.</p>
+    <h2 class="section-title">Where are you today?</h2>
+    <p class="section-sub">Tap a level to read more. Pick the one that feels most honest.</p>
+
+    <div id="levelList" class="level-list"></div>
+
+  </section>
+
+  <section id="sound" class="pane">
+
+    <div class="notice">
+      <strong>Gentle sound therapy.</strong><br>
+      Keep the sound comfortable and usually below your tinnitus level. The aim is support, not masking it aggressively.
+    </div>
+
+    <div class="soft-card">
+      <h3>Sound Settings</h3>
+
+      <div class="control">
+        <label for="noiseType">Sound type</label>
+        <select id="noiseType">
+          <option value="pink" selected>Pink noise — softer</option>
+          <option value="white">White noise — brighter</option>
+          <option value="brown">Brown noise — deeper</option>
+          <option value="ocean">Ocean movement</option>
+        </select>
       </div>
 
-      <div class="sound-card">
-        <div class="timer" id="timer">60:00</div>
-        <div class="status"><span id="statusDot" class="dot"></span><span id="statusText">Idle</span></div>
-        <div class="controls">
-          <button id="startBtn" class="btn btn-primary wide">▶ Start Sound</button>
-          <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
-          <button id="stopBtn" class="btn btn-secondary" disabled>Stop</button>
+      <div class="control">
+        <label for="volume">Volume</label>
+        <div class="range-line">
+          <input id="volume" type="range" min="0" max="1" step="0.01" value="0.12">
+          <span id="volumeOut" class="range-val">12%</span>
         </div>
-        <p class="hint" id="soundHint">Suggested: 30–60 minutes a day, or use it gently in the background.</p>
+        <div class="hint">Start low. You should still be able to hear the world around you.</div>
       </div>
-    </section>
-  </main>
 
-  <div class="footer">Private on this device. No account. No upload.</div>
+      <div class="control">
+        <label for="movement">Gentle movement</label>
+        <div class="range-line">
+          <input id="movement" type="range" min="0" max="1" step="0.01" value="0.25">
+          <span id="movementOut" class="range-val">25%</span>
+        </div>
+        <div class="hint">Adds a very slow rise and fall so the sound feels less static.</div>
+      </div>
+
+      <div class="control">
+        <label for="notchOn">Optional notch filter</label>
+        <select id="notchOn">
+          <option value="off" selected>Off</option>
+          <option value="on">On</option>
+        </select>
+        <div class="hint">Experimental. Leave off if you are unsure.</div>
+      </div>
+
+      <div class="control" id="notchWrap" style="display:none">
+        <label for="notchHz">Notch frequency (Hz)</label>
+        <input id="notchHz" type="number" min="80" max="12000" step="10" value="6000">
+      </div>
+    </div>
+
+    <div class="soft-card">
+      <h3>Session</h3>
+
+      <div class="quick-times" aria-label="Session length">
+        <button class="time-btn" data-mins="15">15m</button>
+        <button class="time-btn" data-mins="30">30m</button>
+        <button class="time-btn active" data-mins="60">60m</button>
+        <button class="time-btn" data-mins="120">120m</button>
+      </div>
+
+      <div class="timer" id="timerDisplay">60:00</div>
+
+      <div class="status">
+        <span class="status-pill">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">Idle</span>
+        </span>
+      </div>
+
+      <div class="btn-row">
+        <button id="startBtn" class="action primary">Start</button>
+        <button id="pauseBtn" class="action secondary" disabled>Pause</button>
+        <button id="stopBtn" class="action secondary" disabled>Stop</button>
+      </div>
+
+      <p id="timerHint" class="hint" style="text-align:center;margin-top:12px;">Press Start to begin.</p>
+    </div>
+
+    <p class="disclaimer">
+      This tool is for general wellbeing support only and is not medical advice. Use safe listening levels. If tinnitus is new, sudden, one-sided with hearing loss, pulsing, or distressing, speak to a qualified clinician.
+    </p>
+
+  </section>
+
+  <section id="hope" class="pane">
+
+    <div class="soft-card">
+      <h3>A note from Tim</h3>
+      <p>I used to find tinnitus unbearable.</p>
+      <p>Today I still hear it, but most of the time I simply do not care about it.</p>
+      <p>Habituation is real. Many people get there.</p>
+    </div>
+
+    <div class="soft-card">
+      <h3>What recovery can look like</h3>
+      <p>Recovery does not always mean silence.</p>
+      <p>It can mean the sound is there, but it no longer feels important.</p>
+      <p>It can mean you stop checking, stop arguing with it, and return your attention to life.</p>
+    </div>
+
+    <div class="soft-card">
+      <h3>The T.I.M. idea</h3>
+      <p><strong>The goal is not silence.</strong></p>
+      <p><strong>The goal is freedom.</strong></p>
+      <p>Use this app as a gentle reminder that progress is possible, even on louder days.</p>
+    </div>
+
+    <p class="disclaimer">
+      The journey levels in this app use original wording inspired by common tinnitus habituation and recovery concepts. They are not a diagnostic tool.
+    </p>
+
+  </section>
+
+  <div class="footer">
+    Private by design. Your level is saved only on this device.
+  </div>
+
 </div>
 
 <script>
-const LEVELS=[
-  {id:1,emoji:"😟",title:"Stuck",short:"Tinnitus dominates my life.",desc:"Tinnitus feels like it has taken over. I feel trapped by it and struggle to imagine things improving.",reflect:"Things can improve, even if it does not feel that way today. Many people who now live well with tinnitus started here."},
-  {id:2,emoji:"😣",title:"Struggling",short:"I spend a lot of time worrying about it.",desc:"I spend a lot of time thinking about tinnitus and wishing it would go away. It feels frustrating and unfair.",reflect:"You are not failing. Habituation begins when you stop measuring every sound and start returning attention to life."},
-  {id:3,emoji:"😐",title:"Accepting",short:"I am beginning to believe I can adapt.",desc:"Tinnitus is still difficult, but I am starting to accept that I can change my relationship with it.",reflect:"Acceptance is not giving up. It is often the point where recovery really begins."},
-  {id:4,emoji:"🙂",title:"Improving",short:"Good days and bad days.",desc:"I still notice tinnitus, but it no longer controls every part of my life. I can see there are better moments.",reflect:"You are already further along than you think. Habituation means your brain is learning tinnitus is not important."},
-  {id:5,emoji:"😊",title:"Letting Go",short:"I often forget about tinnitus.",desc:"Tinnitus is becoming less important. I often forget about it for periods of time, even if it still comes and goes.",reflect:"Forgetting about tinnitus is one of the strongest signs of recovery."},
-  {id:6,emoji:"😎",title:"Empowered",short:"It is there, but I rarely care.",desc:"Tinnitus may still be there, but I do not really care about it anymore. I rarely check on it.",reflect:"Many people think recovery means silence. Real recovery is when you stop caring whether tinnitus is there or not."},
-  {id:7,emoji:"🕊️",title:"Liberated",short:"Tinnitus is no longer a problem.",desc:"Tinnitus no longer feels like a problem in my life. I focus on living rather than checking for the sound.",reflect:"Life has become bigger than tinnitus. This is the freedom many people are moving toward."}
+const LEVELS = [
+  {
+    n:1,
+    emoji:"😟",
+    name:"Overwhelmed",
+    short:"Tinnitus feels like it is running the show.",
+    body:"Most of your attention keeps getting pulled back to tinnitus. It may feel frightening, unfair, or impossible to ignore.",
+    reflection:"Start with support, reassurance, and tiny steps. You do not need to solve everything today."
+  },
+  {
+    n:2,
+    emoji:"😣",
+    name:"Struggling",
+    short:"You are fighting it and wishing it would go away.",
+    body:"Tinnitus still takes up a lot of mental space. You may be checking it often, comparing days, or trying hard to push it away.",
+    reflection:"You are not failing. Many people pass through this stage before things begin to soften."
+  },
+  {
+    n:3,
+    emoji:"😐",
+    name:"Adapting",
+    short:"You are starting to believe you can cope.",
+    body:"It is still difficult, but you may be noticing small windows where your attention moves elsewhere.",
+    reflection:"This is an important shift. You are learning that tinnitus can be present without controlling every moment."
+  },
+  {
+    n:4,
+    emoji:"🙂",
+    name:"Improving",
+    short:"Good days and bad days, but more space around it.",
+    body:"Tinnitus still appears in your day, but it does not always dominate. You are starting to return to normal activities more easily.",
+    reflection:"Progress is not a straight line. A louder day does not erase how far you have come."
+  },
+  {
+    n:5,
+    emoji:"😊",
+    name:"Letting Go",
+    short:"You often forget about tinnitus for periods of time.",
+    body:"The sound may still be there, but it feels less central. You catch yourself living life without checking it as much.",
+    reflection:"Forgetting about tinnitus is one of the clearest signs that your brain is learning it is not important."
+  },
+  {
+    n:6,
+    emoji:"😎",
+    name:"In Control",
+    short:"It is there, but it rarely bothers you.",
+    body:"You may still hear tinnitus, even loudly sometimes, but it no longer feels like a threat. You care about it much less.",
+    reflection:"Many people think recovery means silence. Real recovery can be when you stop caring whether the sound is there."
+  },
+  {
+    n:7,
+    emoji:"🕊️",
+    name:"Free To Live",
+    short:"Tinnitus no longer feels important in your life.",
+    body:"You are mostly focused on life, not tinnitus. The sound may come and go in awareness, but it no longer defines your day.",
+    reflection:"Life is bigger than tinnitus. Keep giving your attention to the things that matter."
+  }
 ];
-const STORE="tim_mobile_journey_v1";
-const list=document.getElementById('levelList');
-const summary=document.getElementById('summary');
-let state=loadState();
-function loadState(){try{return JSON.parse(localStorage.getItem(STORE))||{start:null,current:null}}catch(e){return{start:null,current:null}}}
-function saveState(){localStorage.setItem(STORE,JSON.stringify(state))}
+
+const STORE = "tim_v2_habituation_sound";
+
+function loadState(){
+  try{
+    return JSON.parse(localStorage.getItem(STORE)) || {};
+  }catch(e){
+    return {};
+  }
+}
+function saveState(s){
+  try{
+    localStorage.setItem(STORE, JSON.stringify(s));
+  }catch(e){}
+}
+
+function setTab(name){
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === name);
+  });
+  document.querySelectorAll(".pane").forEach(pane => {
+    pane.classList.toggle("active", pane.id === name);
+  });
+}
+
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => setTab(btn.dataset.tab));
+});
+
 function renderLevels(){
-  list.innerHTML='';
-  LEVELS.slice().reverse().forEach(l=>{
-    const card=document.createElement('article');
-    card.className='level-card'+(state.current===l.id?' selected':'');
-    card.dataset.id=l.id;
-    card.innerHTML=`
-      <button class="level-head" aria-expanded="false">
-        <span class="level-left">
-          <span class="emoji">${l.emoji}</span>
-          <span>
-            <span class="level-name">Level ${l.id} — ${l.title}</span>
-            <span class="level-short">${l.short}</span>
-          </span>
-        </span>
-        <span class="chev">⌄</span>
-      </button>
-      <div class="level-body">
-        <p>${l.desc}</p>
-        <div class="reflection">${l.reflect}</div>
-        <button class="pick">✓ This is me today</button>
-      </div>`;
+  const state = loadState();
+  const current = Number(state.currentLevel || 0);
+  const list = document.getElementById("levelList");
+  list.innerHTML = "";
+
+  LEVELS.slice().reverse().forEach(level => {
+    const card = document.createElement("article");
+    card.className = "level-card" + (current === level.n ? " selected" : "");
+    card.dataset.level = level.n;
+
+    const head = document.createElement("button");
+    head.className = "level-head";
+    head.type = "button";
+    head.innerHTML = `
+      <span class="level-emoji">${level.emoji}</span>
+      <span class="level-main">
+        <span class="level-title">Level ${level.n} — ${level.name}</span>
+        <span class="level-short">${level.short}</span>
+      </span>
+      <span class="chev">⌄</span>
+    `;
+
+    const body = document.createElement("div");
+    body.className = "level-body";
+    body.innerHTML = `
+      <p>${level.body}</p>
+      <p><strong>Helpful reminder:</strong> ${level.reflection}</p>
+    `;
+
+    const pick = document.createElement("button");
+    pick.type = "button";
+    pick.className = "pick-btn" + (current === level.n ? " chosen" : "");
+    pick.textContent = current === level.n ? "✓ This is me today" : "This is me today";
+
+    head.addEventListener("click", () => {
+      const openAlready = card.classList.contains("open");
+      document.querySelectorAll(".level-card").forEach(c => c.classList.remove("open"));
+      if(!openAlready) card.classList.add("open");
+    });
+
+    pick.addEventListener("click", () => {
+      chooseLevel(level.n);
+      document.querySelectorAll(".level-card").forEach(c => c.classList.remove("open"));
+      card.classList.add("open");
+    });
+
+    body.appendChild(pick);
+    card.appendChild(head);
+    card.appendChild(body);
     list.appendChild(card);
   });
-  addLevelEvents();
-  renderSummary();
-}
-function addLevelEvents(){
-  document.querySelectorAll('.level-card').forEach(card=>{
-    const head=card.querySelector('.level-head');
-    const pick=card.querySelector('.pick');
-    head.addEventListener('click',()=>{
-      const isOpen=card.classList.contains('open');
-      document.querySelectorAll('.level-card').forEach(c=>{c.classList.remove('open');c.querySelector('.level-head').setAttribute('aria-expanded','false')});
-      if(!isOpen){card.classList.add('open');head.setAttribute('aria-expanded','true')}
-    });
-    pick.addEventListener('click',()=>selectLevel(Number(card.dataset.id)));
-  });
-}
-function selectLevel(id){
-  if(!state.start) state.start=id;
-  state.current=id;
-  saveState();
-  renderLevels();
-  const selected=document.querySelector(`.level-card[data-id="${id}"]`);
-  if(selected){selected.classList.add('open'); selected.querySelector('.level-head').setAttribute('aria-expanded','true');}
-  summary.scrollIntoView({behavior:'smooth',block:'start'});
-}
-function renderSummary(){
-  if(!state.current){summary.classList.remove('show');return}
-  const l=LEVELS.find(x=>x.id===state.current);
-  summary.classList.add('show');
-  document.getElementById('summaryTitle').textContent=`${l.emoji} Level ${l.id} — ${l.title}`;
-  document.getElementById('summaryDesc').textContent=l.reflect;
-  document.getElementById('summaryFill').style.width=(l.id/7*100)+'%';
-  document.getElementById('summaryProgress').textContent=`Level ${l.id} of 7 — ${l.id<7?'keep going, it gets better':'you made it'}.`;
-  document.getElementById('startVal').textContent='Level '+state.start;
-  document.getElementById('todayVal').textContent='Level '+state.current;
-  const diff=state.current-state.start;
-  document.getElementById('changeVal').textContent=(diff>0?'+':'')+diff;
-}
-function switchTab(tab){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
-  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
-  document.getElementById('pane-'+tab).classList.add('active');
-}
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 
-let audioCtx=null,noiseNode=null,masterGain=null,gainNode=null,notchFilter=null,amOsc=null,amGain=null;
-let isRunning=false,isPaused=false,timerInt=null,remain=3600;
-const vol=document.getElementById('vol'), move=document.getElementById('moveDepth'), mins=document.getElementById('mins');
-function pad(n){return String(n).padStart(2,'0')}
-function setTimer(){const m=Math.floor(remain/60),s=remain%60;document.getElementById('timer').textContent=pad(m)+':'+pad(s)}
-function setStatus(){
-  document.getElementById('startBtn').disabled=isRunning&&!isPaused;
-  document.getElementById('pauseBtn').disabled=!isRunning;
-  document.getElementById('stopBtn').disabled=!isRunning;
-  document.getElementById('pauseBtn').textContent=isPaused?'Resume':'Pause';
-  const dot=document.getElementById('statusDot');
-  dot.className='dot'+(isRunning?(isPaused?' pause':' on'):'');
-  document.getElementById('statusText').textContent=isRunning?(isPaused?'Paused':'Running'):'Idle';
+  updateCurrentCard();
 }
+
+function chooseLevel(n){
+  const state = loadState();
+  if(!state.startLevel){
+    state.startLevel = n;
+  }
+  state.currentLevel = n;
+  state.updatedAt = new Date().toISOString();
+  saveState(state);
+  renderLevels();
+}
+
+function updateCurrentCard(){
+  const state = loadState();
+  const current = Number(state.currentLevel || 0);
+  const start = Number(state.startLevel || current || 0);
+  const card = document.getElementById("currentCard");
+
+  if(!current){
+    card.classList.remove("show");
+    return;
+  }
+
+  const level = LEVELS.find(l => l.n === current);
+  const diff = current - start;
+
+  document.getElementById("currentEmoji").textContent = level.emoji;
+  document.getElementById("currentTitle").textContent = `Level ${level.n} — ${level.name}`;
+  document.getElementById("currentOneLine").textContent = level.reflection;
+  document.getElementById("startedVal").textContent = start;
+  document.getElementById("todayVal").textContent = current;
+  document.getElementById("changeVal").textContent = (diff > 0 ? "+" : "") + diff;
+
+  card.classList.add("show");
+}
+
+/* Sound engine */
+let audioCtx = null;
+let masterGain = null;
+let gainNode = null;
+let notchFilter = null;
+let amOsc = null;
+let amGain = null;
+let noiseNode = null;
+let isRunning = false;
+let isPaused = false;
+let timerInterval = null;
+let selectedMinutes = 60;
+let remainSecs = 3600;
+
+const noiseType = document.getElementById("noiseType");
+const volume = document.getElementById("volume");
+const movement = document.getElementById("movement");
+const volumeOut = document.getElementById("volumeOut");
+const movementOut = document.getElementById("movementOut");
+const notchOn = document.getElementById("notchOn");
+const notchWrap = document.getElementById("notchWrap");
+const notchHz = document.getElementById("notchHz");
+
 function ensureAudio(){
   if(audioCtx) return;
-  const AC=window.AudioContext||window.webkitAudioContext;
-  audioCtx=new AC();
-  masterGain=audioCtx.createGain(); masterGain.gain.value=Number(vol.value); masterGain.connect(audioCtx.destination);
-  notchFilter=audioCtx.createBiquadFilter(); notchFilter.type='notch'; notchFilter.frequency.value=Number(document.getElementById('notchHz').value); notchFilter.Q.value=18;
-  gainNode=audioCtx.createGain(); gainNode.gain.value=1;
-  amOsc=audioCtx.createOscillator(); amOsc.type='sine'; amOsc.frequency.value=0.12;
-  amGain=audioCtx.createGain(); amGain.gain.value=Number(move.value);
-  amOsc.connect(amGain); amGain.connect(gainNode.gain); amOsc.start();
+
+  const AC = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AC();
+
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = Number(volume.value);
+  masterGain.connect(audioCtx.destination);
+
+  notchFilter = audioCtx.createBiquadFilter();
+  notchFilter.type = "notch";
+  notchFilter.frequency.value = Number(notchHz.value);
+  notchFilter.Q.value = 18;
+
+  gainNode = audioCtx.createGain();
+  gainNode.gain.value = 1;
+
+  amOsc = audioCtx.createOscillator();
+  amOsc.type = "sine";
+  amOsc.frequency.value = 0.10;
+
+  amGain = audioCtx.createGain();
+  amGain.gain.value = Number(movement.value);
+
+  amOsc.connect(amGain);
+  amGain.connect(gainNode.gain);
+  amOsc.start();
 }
+
 function createNoise(type){
-  const node=audioCtx.createScriptProcessor(4096,1,1);
-  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,last=0;
-  node.onaudioprocess=e=>{
-    const out=e.outputBuffer.getChannelData(0);
-    for(let i=0;i<out.length;i++){
-      const w=Math.random()*2-1;
-      if(type==='white') out[i]=w*.25;
-      else if(type==='pink'){
-        b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759; b2=.969*b2+w*.153852; b3=.8665*b3+w*.3104856; b4=.55*b4+w*.5329522; b5=-.7616*b5-w*.016898;
-        const p=b0+b1+b2+b3+b4+b5+b6+w*.5362; b6=w*.115926; out[i]=p*.11;
+  const node = audioCtx.createScriptProcessor(4096, 1, 1);
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,last=0,oceanPhase=0;
+
+  node.onaudioprocess = e => {
+    const out = e.outputBuffer.getChannelData(0);
+
+    for(let i=0; i<out.length; i++){
+      const w = Math.random()*2 - 1;
+
+      if(type === "white"){
+        out[i] = w * 0.45;
+      }else if(type === "pink"){
+        b0 = 0.99886*b0 + w*0.0555179;
+        b1 = 0.99332*b1 + w*0.0750759;
+        b2 = 0.96900*b2 + w*0.1538520;
+        b3 = 0.86650*b3 + w*0.3104856;
+        b4 = 0.55000*b4 + w*0.5329522;
+        b5 = -0.7616*b5 - w*0.0168980;
+        const pink = b0+b1+b2+b3+b4+b5+b6+w*0.5362;
+        b6 = w*0.115926;
+        out[i] = pink * 0.10;
+      }else if(type === "brown"){
+        last = Math.max(-1, Math.min(1, last + 0.02*w));
+        out[i] = last * 0.9;
       }else{
-        last=Math.min(1,Math.max(-1,last+(type==='brown'?.02:.018)*w));
-        out[i]=last*(type==='ocean'?0.8:0.9)+(type==='ocean'?w*.025:0);
+        oceanPhase += 0.00003;
+        const swell = 0.35 + 0.65 * ((Math.sin(oceanPhase) + 1) / 2);
+        last = Math.max(-1, Math.min(1, last + 0.018*w));
+        out[i] = (last * 0.65 + w * 0.035) * swell;
       }
     }
   };
+
   return node;
 }
+
 function connectRouting(){
-  if(!noiseNode)return;
-  try{noiseNode.disconnect()}catch(e){} try{notchFilter.disconnect()}catch(e){} try{gainNode.disconnect()}catch(e){}
-  if(document.getElementById('notchOn').value==='on'){noiseNode.connect(notchFilter);notchFilter.connect(gainNode)} else noiseNode.connect(gainNode);
+  if(!noiseNode) return;
+
+  try{ noiseNode.disconnect(); }catch(e){}
+  try{ notchFilter.disconnect(); }catch(e){}
+  try{ gainNode.disconnect(); }catch(e){}
+
+  if(notchOn.value === "on"){
+    noiseNode.connect(notchFilter);
+    notchFilter.connect(gainNode);
+  }else{
+    noiseNode.connect(gainNode);
+  }
+
   gainNode.connect(masterGain);
 }
+
 function updateAudio(){
-  document.getElementById('volOut').textContent=Math.round(Number(vol.value)*100)+'%';
-  document.getElementById('moveOut').textContent=Math.round(Number(move.value)*100)+'%';
-  if(!audioCtx)return;
-  masterGain.gain.value=Number(vol.value);
-  amGain.gain.value=Number(move.value);
-  notchFilter.frequency.value=Number(document.getElementById('notchHz').value)||6000;
-  if(isRunning)connectRouting();
+  volumeOut.textContent = Math.round(Number(volume.value)*100) + "%";
+  movementOut.textContent = Math.round(Number(movement.value)*100) + "%";
+  notchWrap.style.display = notchOn.value === "on" ? "block" : "none";
+
+  if(!audioCtx) return;
+
+  masterGain.gain.value = Number(volume.value);
+  amGain.gain.value = Number(movement.value);
+  notchFilter.frequency.value = Number(notchHz.value);
+
+  if(isRunning){
+    connectRouting();
+  }
 }
-function startSound(){
+
+function pad(n){
+  return String(n).padStart(2,"0");
+}
+
+function renderTimer(){
+  const m = Math.floor(remainSecs / 60);
+  const s = remainSecs % 60;
+  document.getElementById("timerDisplay").textContent = pad(m) + ":" + pad(s);
+}
+
+function updateSoundUI(){
+  document.getElementById("startBtn").disabled = isRunning && !isPaused;
+  document.getElementById("pauseBtn").disabled = !isRunning;
+  document.getElementById("stopBtn").disabled = !isRunning;
+  document.getElementById("pauseBtn").textContent = isPaused ? "Resume" : "Pause";
+
+  const dot = document.getElementById("statusDot");
+  dot.className = "dot" + (isRunning ? (isPaused ? " paused" : " running") : "");
+
+  document.getElementById("statusText").textContent = isRunning ? (isPaused ? "Paused" : "Running") : "Idle";
+}
+
+function startSession(){
   ensureAudio();
-  if(audioCtx.state==='suspended')audioCtx.resume();
-  remain=Number(mins.value)*60; setTimer();
-  if(noiseNode){try{noiseNode.disconnect()}catch(e){} noiseNode=null}
-  noiseNode=createNoise(document.getElementById('noiseType').value);
-  connectRouting(); isRunning=true; isPaused=false;
-  if(timerInt)clearInterval(timerInt);
-  timerInt=setInterval(()=>{if(!isRunning||isPaused)return; remain=Math.max(0,remain-1); setTimer(); if(remain===0)stopSound(true)},1000);
-  document.getElementById('soundHint').textContent='Keep it comfortable — audible but not dominating.';
-  setStatus();
+  if(audioCtx.state === "suspended") audioCtx.resume();
+
+  remainSecs = selectedMinutes * 60;
+  renderTimer();
+
+  if(noiseNode){
+    try{ noiseNode.disconnect(); }catch(e){}
+    noiseNode.onaudioprocess = null;
+  }
+
+  noiseNode = createNoise(noiseType.value);
+  connectRouting();
+
+  isRunning = true;
+  isPaused = false;
+
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if(!isRunning || isPaused) return;
+    remainSecs = Math.max(0, remainSecs - 1);
+    renderTimer();
+    if(remainSecs === 0) stopSession(true);
+  }, 1000);
+
+  document.getElementById("timerHint").textContent = "Keep it gentle and comfortable.";
+  updateSoundUI();
 }
-function pauseSound(){
-  if(!isRunning)return;
-  if(isPaused){audioCtx.resume();isPaused=false}else{audioCtx.suspend();isPaused=true}
-  setStatus();
+
+function togglePause(){
+  if(!isRunning) return;
+
+  if(isPaused){
+    audioCtx.resume();
+    isPaused = false;
+  }else{
+    audioCtx.suspend();
+    isPaused = true;
+  }
+
+  updateSoundUI();
 }
-function stopSound(done){
-  if(timerInt){clearInterval(timerInt);timerInt=null}
-  if(noiseNode){try{noiseNode.disconnect()}catch(e){} noiseNode.onaudioprocess=null; noiseNode=null}
-  isRunning=false; isPaused=false;
-  document.getElementById('soundHint').textContent=done?'Session complete. Return to life and try not to check.':'Stopped. Restart whenever useful.';
-  setStatus();
+
+function stopSession(auto=false){
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  if(noiseNode){
+    try{ noiseNode.disconnect(); }catch(e){}
+    noiseNode.onaudioprocess = null;
+    noiseNode = null;
+  }
+
+  isRunning = false;
+  isPaused = false;
+  document.getElementById("timerHint").textContent = auto ? "Session complete." : "Stopped.";
+  updateSoundUI();
 }
-vol.addEventListener('input',updateAudio); move.addEventListener('input',updateAudio);
-['noiseType','notchOn','notchHz'].forEach(id=>document.getElementById(id).addEventListener('input',updateAudio));
-mins.addEventListener('change',()=>{if(!isRunning){remain=Number(mins.value)*60; setTimer()}});
-document.getElementById('startBtn').addEventListener('click',startSound);
-document.getElementById('pauseBtn').addEventListener('click',pauseSound);
-document.getElementById('stopBtn').addEventListener('click',()=>stopSound(false));
-renderLevels(); updateAudio(); setTimer(); setStatus();
+
+document.querySelectorAll(".time-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedMinutes = Number(btn.dataset.mins);
+    remainSecs = selectedMinutes * 60;
+    renderTimer();
+
+    document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+document.getElementById("startBtn").addEventListener("click", startSession);
+document.getElementById("pauseBtn").addEventListener("click", togglePause);
+document.getElementById("stopBtn").addEventListener("click", () => stopSession(false));
+
+[noiseType, volume, movement, notchOn, notchHz].forEach(el => {
+  el.addEventListener("input", updateAudio);
+  el.addEventListener("change", updateAudio);
+});
+
+renderLevels();
+updateAudio();
+renderTimer();
+updateSoundUI();
 </script>
 </body>
 </html>
