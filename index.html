@@ -488,7 +488,7 @@ input[type=range]{
   <header class="hero">
     <div class="logo">T.I.M.</div>
     <div class="tagline">Tinnitus Is Manageable</div>
-    <div class="mini">Track your habituation, not your tinnitus.</div>
+    <div class="mini">Hope, sound therapy and a gentle guide to habituation.</div>
   </header>
 
   <nav class="tabs" aria-label="App sections">
@@ -526,6 +526,15 @@ input[type=range]{
           <div class="progress-label">Change</div>
           <div id="changeVal" class="progress-value">—</div>
         </div>
+      </div>
+
+      <div style="margin-top:15px;">
+        <div style="background:#222839;border-radius:999px;height:18px;overflow:hidden;">
+          <div id="journeyBar" style="height:100%;width:14%;background:#EF9F27;transition:0.4s;"></div>
+        </div>
+        <p style="text-align:center;color:#9aa0b5;font-size:12px;margin-top:8px;">
+          Your Habituation Journey
+        </p>
       </div>
     </div>
 
@@ -633,15 +642,15 @@ input[type=range]{
     <div class="soft-card">
       <h3>A note from Tim</h3>
       <p>When my tinnitus first started, I worried about it a lot. If you're concerned, it's always worth getting your ears checked. In some cases, hearing aids can help, particularly if hearing loss is involved.</p>
-      <p>Today I still hear it, but most of the time I simply do not care about it.</p>
+      <p>Today I can still hear it if I listen for it, but most of the time I simply do not care about it, and it isn't a problem.</p>
       <p>Habituation is real. Many people get there.</p>
     </div>
 
     <div class="soft-card">
       <h3>What recovery can look like</h3>
       <p>Recovery does not always mean silence.</p>
-      <p>It can mean the sound is there, but it no longer feels important.</p>
-      <p>It can mean you stop checking, stop arguing with it, and return your attention to life.</p>
+      <p>It can mean the sound is there, but it no longer feels important and is often not a distraction.</p>
+      <p>Recovery can mean you stop checking, stop arguing with it, and return your attention to life.</p>
     </div>
 
     <div class="soft-card">
@@ -848,6 +857,7 @@ function updateCurrentCard(){
   document.getElementById("startedVal").textContent = start;
   document.getElementById("todayVal").textContent = current;
   document.getElementById("changeVal").textContent = (diff > 0 ? "+" : "") + diff;
+  const jb=document.getElementById("journeyBar"); if(jb) jb.style.width=((level.n/7)*100)+"%";
 
   card.classList.add("show");
 }
