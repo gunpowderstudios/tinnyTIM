@@ -535,6 +535,15 @@ input[type=range]{
       </div>
     </div>
 
+    <div style="margin-top:15px;">
+      <div style="background:#222839;border-radius:999px;height:18px;overflow:hidden;">
+        <div id="journeyBar" style="height:100%;width:14%;background:#EF9F27;transition:0.4s;"></div>
+      </div>
+      <p style="text-align:center;color:#9aa0b5;font-size:12px;margin-top:8px;">
+        Your Habituation Journey
+      </p>
+    </div>
+
     <h2 class="section-title">Where are you today?</h2>
     <p class="section-sub">Tap a level to read more. Pick the one that feels most honest.</p>
 
@@ -639,15 +648,15 @@ input[type=range]{
     <div class="soft-card">
       <h3>A note from Tim</h3>
       <p>When my tinnitus first started, I worried about it a lot. If you're concerned, it's always worth getting your ears checked. In some cases, hearing aids can help, particularly if hearing loss is involved.</p>
-      <p>Today I still hear it, but most of the time I simply do not care about it.</p>
+      <p>Today I can still hear it if I listen for it, but most of the time I simply do not care about it, and it isn't a problem.</p>
       <p>Habituation is real. Many people get there.</p>
     </div>
 
     <div class="soft-card">
       <h3>What recovery can look like</h3>
       <p>Recovery does not always mean silence.</p>
-      <p>It can mean the sound is there, but it no longer feels important.</p>
-      <p>It can mean you stop checking, stop arguing with it, and return your attention to life.</p>
+      <p>It can mean the sound is there, but it no longer feels important and is often not a distraction.</p>
+      <p>Recovery can mean you stop checking, stop arguing with it, and return your attention to life.</p>
     </div>
 
     <div class="soft-card">
@@ -666,7 +675,7 @@ input[type=range]{
   <div class="soft-card">
     <h3>Acknowledgements</h3>
     <p>
-      Inspired by the experiences of people who have successfully habituated to tinnitus, and by the work of tinnitus professionals who have helped others understand that recovery is possible.
+      Inspired by tinnitus habituation and recovery concepts, and by the experiences of people who have successfully learned to live well with tinnitus.
     </p>
     <p>
       The wording, level descriptions and app design used in T.I.M. are original adaptations created for educational and self-help purposes.
@@ -854,6 +863,9 @@ function updateCurrentCard(){
   document.getElementById("startedVal").textContent = start;
   document.getElementById("todayVal").textContent = current;
   document.getElementById("changeVal").textContent = (diff > 0 ? "+" : "") + diff;
+
+  const jb = document.getElementById("journeyBar");
+  if (jb) jb.style.width = ((level.n / 7) * 100) + "%";
 
   card.classList.add("show");
 }
