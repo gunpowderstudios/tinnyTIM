@@ -626,6 +626,11 @@ input[type=range]{
   <section id="hope" class="pane">
 
     <div class="soft-card">
+      <h3>💡 Today's Tip</h3>
+      <p id="dailyTip">Loading today’s tip...</p>
+    </div>
+
+    <div class="soft-card">
       <h3>A note from Tim</h3>
       <p>I used to find tinnitus unbearable.</p>
       <p>Today I still hear it, but most of the time I simply do not care about it.</p>
@@ -651,6 +656,16 @@ input[type=range]{
     </p>
 
   </section>
+
+  <div class="soft-card">
+    <h3>Acknowledgements</h3>
+    <p>
+      Inspired by the tinnitus habituation work of Julian Cowan Hill and other tinnitus professionals.
+    </p>
+    <p>
+      The wording, level descriptions and app design used in T.I.M. are original adaptations created for educational and self-help purposes.
+    </p>
+  </div>
 
   <div class="footer">
     This app is FREE to use and share. Your data is saved only on this (your) device.
@@ -1063,6 +1078,58 @@ document.getElementById("stopBtn").addEventListener("click", () => stopSession(f
   el.addEventListener("input", updateAudio);
   el.addEventListener("change", updateAudio);
 });
+
+const dailyTips = [
+  "The goal is not to hear tinnitus less. The goal is to think about tinnitus less.",
+  "A loud day is not a setback. Habituation is measured by your reaction, not the volume.",
+  "Tinnitus spikes are normal. They can feel alarming, but they are usually a temporary part of the habituation journey.",
+  "Recovery is rarely a straight line. Good days and bad days are both part of the journey.",
+  "Don’t judge your progress by today. Judge it by where you were months ago.",
+  "Every time you stop checking your tinnitus, you teach your brain it is not important.",
+  "Most people recover by doing less monitoring, not more.",
+  "Notice the moments when you forgot about tinnitus today. Even ten seconds counts.",
+  "You don’t need silence to be happy.",
+  "Your brain already ignores thousands of sounds every day. Tinnitus can become one of them.",
+  "Tinnitus may still be there. One day you may realise you simply don’t care very much anymore.",
+  "Stop asking, ‘How loud is it?’ Start asking, ‘What would I like to do today?’",
+  "Don’t wait for tinnitus to disappear before living your life.",
+  "Many people with tinnitus live full, happy and successful lives.",
+  "A spike is usually a temporary increase in awareness, not damage.",
+  "Bad sleep, stress, illness and even focusing on tinnitus can make it seem louder. This is normal.",
+  "If today is a tough day, be patient with yourself. Tomorrow is a new day.",
+  "The less important tinnitus becomes, the less attention it receives.",
+  "Progress often happens so gradually that you only notice it when you look back.",
+  "Habituation is not about winning a battle. It is about no longer needing to fight.",
+  "A temporary setback does not erase months of progress.",
+  "Some of your best recovery happens when you stop trying to recover.",
+  "Be careful not to turn tinnitus into a full-time hobby.",
+  "Every day you continue living your life is a victory.",
+  "Stress can make tinnitus seem louder. That does not mean damage has occurred.",
+  "The brain learns through repetition. Keep returning your attention to life.",
+  "The aim is not to control tinnitus. The aim is to stop needing to control it.",
+  "Recovery often begins when fear starts to fade.",
+  "Many people who now live happily with tinnitus once felt exactly as you do.",
+  "Spikes can happen after stress, poor sleep, illness or even a big life event. They usually settle again.",
+  "A louder day is not proof that you are back at the beginning.",
+  "Tinnitus can be present without being important.",
+  "Let the sound be boring. Boring is where freedom begins.",
+  "You are allowed to have a normal day even if tinnitus is audible.",
+  "Your nervous system can calm down even before the sound changes.",
+  "Keep making your world bigger than tinnitus.",
+  "Checking tinnitus is like refreshing a bad webpage. Close the tab and return to life.",
+  "You do not have to feel brave all day. Just take the next ordinary step.",
+  "A calm reaction today teaches your brain something useful for tomorrow.",
+  "The win is not silence. The win is getting on with your day."
+];
+
+function showDailyTip(){
+  const tipEl = document.getElementById("dailyTip");
+  if(!tipEl) return;
+  const dayNumber = Math.floor(Date.now() / 86400000);
+  tipEl.textContent = dailyTips[dayNumber % dailyTips.length];
+}
+
+showDailyTip();
 
 renderLevels();
 updateAudio();
