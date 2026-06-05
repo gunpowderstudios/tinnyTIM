@@ -1,354 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>T.I.M. - Tinnitus Is Manageable</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>T.I.M. — Tinnitus Is Manageable</title>
 <style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;
+  --panel:#181c26;
+  --panel2:#1f2533;
+  --line:#343b50;
+  --text:#e8eaf0;
+  --muted:#9aa0b5;
+  --soft:#b9c0d2;
+  --orange:#EF9F27;
+  --orange2:#BA7517;
+  --green:#5DCAA5;
+  --green2:#1D9E75;
+  --danger:#ff8a8a;
+  --radius:18px;
 }
-
+html{scroll-behavior:smooth}
 body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-background:#0f1117;
-color:#e8eaf0;
-padding:20px;
-max-width:600px;
-margin:auto;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:radial-gradient(700px 500px at 50% -20%, #222b3d 0%, var(--bg) 55%);
+  color:var(--text);
+  font-size:16px;
+  line-height:1.5;
+  padding:18px 14px 34px;
 }
-
-.hero{
-text-align:center;
-margin-bottom:25px;
-}
-
-.hero h1{
-font-size:42px;
-color:#EF9F27;
-margin-bottom:5px;
-}
-
-.hero p{
-color:#9aa0b5;
-font-size:18px;
-}
-
+.app{width:min(640px,100%);margin:0 auto}
+.hero{text-align:center;margin:8px 0 18px}
+.hero h1{font-size:48px;line-height:1;color:var(--orange);font-weight:750;letter-spacing:-1px}
+.hero p{font-size:18px;color:var(--soft);margin-top:6px}
+.hero .small{font-size:14px;color:var(--muted);margin-top:4px}
 .note{
-background:#181c26;
-border:1px solid #1D9E75;
-border-radius:16px;
-padding:16px;
-margin-bottom:25px;
-line-height:1.6;
-color:#9FE1CB;
+  background:linear-gradient(180deg, rgba(29,158,117,.14), rgba(29,158,117,.06));
+  border:1px solid rgba(93,202,165,.55);
+  border-radius:var(--radius);
+  padding:15px;
+  margin:0 0 14px;
+  color:#bff5e2;
 }
-
-.note strong{
-color:#5DCAA5;
+.note strong{color:var(--green);font-weight:750}
+.tabs{
+  position:sticky;top:0;z-index:5;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6px;
+  background:rgba(15,17,23,.92);
+  backdrop-filter:blur(10px);
+  padding:8px 0 12px;
+  margin-bottom:4px;
 }
-
-.card{
-background:#181c26;
-border:1px solid #3a3f52;
-border-radius:16px;
-padding:16px;
-margin-bottom:12px;
-cursor:pointer;
-transition:.2s;
+.tab{
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--muted);
+  padding:12px 8px;
+  border-radius:999px;
+  font-size:15px;
+  font-weight:750;
+  cursor:pointer;
 }
-
-.card:hover{
-transform:translateY(-2px);
+.tab.active{background:var(--orange);color:#111;border-color:var(--orange)}
+.pane{display:none}.pane.active{display:block}
+.section-title{font-size:22px;margin:14px 0 5px;letter-spacing:-.2px}
+.intro{color:var(--muted);font-size:14px;margin-bottom:14px}
+.level-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:10px;
+  overflow:hidden;
 }
-
-.card.selected{
-border:2px solid #EF9F27;
-background:#222839;
+.level-head{
+  width:100%;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px;
+  background:transparent;
+  color:var(--text);
+  border:0;
+  text-align:left;
+  cursor:pointer;
 }
-
-.level{
-font-size:22px;
-font-weight:600;
-margin-bottom:6px;
+.level-left{display:flex;gap:12px;align-items:center;min-width:0}
+.emoji{font-size:28px;width:36px;text-align:center;flex:0 0 auto}
+.level-name{font-size:17px;font-weight:800;line-height:1.15}
+.level-short{font-size:13px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:390px}
+.chev{color:var(--muted);font-size:22px;transition:.2s;flex:0 0 auto}
+.level-card.open .chev{transform:rotate(180deg)}
+.level-card.selected{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange) inset}
+.level-card.selected .level-head{background:rgba(239,159,39,.08)}
+.level-body{display:none;padding:0 14px 14px;color:var(--soft)}
+.level-card.open .level-body{display:block}
+.level-body p{margin:9px 0}
+.reflection{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  color:#dce1ee;
+  margin-top:10px;
 }
-
-.desc{
-font-size:14px;
-color:#b5bdd0;
-line-height:1.5;
+.pick{
+  width:100%;
+  margin-top:12px;
+  border:0;
+  border-radius:13px;
+  background:var(--orange);
+  color:#111;
+  padding:13px 14px;
+  font-weight:850;
+  font-size:16px;
+  cursor:pointer;
 }
-
-.current{
-display:none;
-margin-top:25px;
-background:#181c26;
-border-radius:16px;
-padding:20px;
-border:1px solid #EF9F27;
+.summary{
+  display:none;
+  background:var(--panel);
+  border:1px solid var(--orange);
+  border-radius:var(--radius);
+  padding:15px;
+  margin:12px 0 16px;
 }
-
-.current h2{
-color:#EF9F27;
-margin-bottom:10px;
+.summary.show{display:block}
+.summary h2{color:var(--orange);font-size:20px;margin-bottom:5px}
+.summary p{color:var(--soft);font-size:14px;margin:4px 0}
+.bar{height:8px;background:var(--panel2);border-radius:999px;overflow:hidden;margin:12px 0 7px}
+.fill{height:100%;background:var(--orange);width:0%;transition:.35s}
+.journey-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stat .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.stat .value{font-size:18px;color:var(--text);font-weight:850;margin-top:2px}
+.reminder{
+  background:rgba(239,159,39,.09);
+  border:1px solid rgba(239,159,39,.35);
+  border-radius:var(--radius);
+  padding:14px;
+  margin-top:14px;
+  color:#ffe0b0;
 }
-
-.current p{
-line-height:1.6;
-margin-bottom:12px;
+.sound-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:15px;
+  margin-bottom:12px;
 }
-
-.progress{
-margin-top:20px;
-padding-top:15px;
-border-top:1px solid #333;
+.field{margin-bottom:14px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;font-weight:650}
+select,input[type=number]{
+  width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);
+  border-radius:13px;padding:12px;font-size:16px;font-family:inherit;
 }
-
-.progress div{
-margin-bottom:8px;
+.range-row{display:flex;gap:10px;align-items:center}
+input[type=range]{width:100%;accent-color:var(--orange)}
+.rval{min-width:44px;text-align:right;color:var(--orange);font-weight:850;font-size:14px}
+.hint{font-size:13px;color:var(--muted);line-height:1.4;margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.timer{text-align:center;font-size:54px;line-height:1;font-variant-numeric:tabular-nums;color:var(--orange);font-weight:750;margin:14px 0 10px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.controls .wide{grid-column:1/-1}
+.btn{border:0;border-radius:14px;padding:14px 12px;font-size:16px;font-weight:850;cursor:pointer}
+.btn-primary{background:var(--orange);color:#111}.btn-secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.status{text-align:center;color:var(--muted);font-size:14px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:99px;background:#687087;margin-right:6px}.dot.on{background:var(--green)}.dot.pause{background:var(--orange)}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;line-height:1.5}
+@media(max-width:420px){
+  body{padding-left:12px;padding-right:12px}
+  .hero h1{font-size:44px}
+  .level-short{max-width:235px}
+  .journey-stats{grid-template-columns:1fr}
+  .timer{font-size:48px}
 }
-
-.ladder{
-margin-top:15px;
-line-height:1.8;
-font-size:18px;
-}
-
-.you{
-color:#EF9F27;
-font-weight:bold;
-}
-
-.footer{
-margin-top:25px;
-text-align:center;
-color:#8b91a8;
-font-size:15px;
-line-height:1.6;
-}
-
 </style>
 </head>
-
 <body>
+<div class="app">
+  <header class="hero">
+    <h1>T.I.M.</h1>
+    <p>Tinnitus Is Manageable</p>
+    <p class="small">Track habituation, not tinnitus.</p>
+  </header>
 
-<div class="hero">
-<h1>T.I.M.</h1>
-<p>Tinnitus Is Manageable</p>
-</div>
+  <section class="note">
+    <strong>A note from Tim</strong><br>
+    I used to find tinnitus unbearable. Today I still hear it, but most of the time I simply don't care about it. Habituation is real — and it is possible.
+  </section>
 
-<div class="note">
-<strong>A note from Tim</strong><br><br>
-I used to find tinnitus unbearable.
-Today I still hear it, but most of the time I simply don't care about it.
-Habituation is real.
-Many people get there.
-</div>
+  <nav class="tabs" aria-label="App tabs">
+    <button class="tab active" data-tab="journey">🧭 Journey</button>
+    <button class="tab" data-tab="sound">🎧 Sound Therapy</button>
+  </nav>
 
-<h2 style="margin-bottom:15px;">Where are you today?</h2>
+  <main>
+    <section id="pane-journey" class="pane active">
+      <div id="summary" class="summary" aria-live="polite">
+        <h2 id="summaryTitle">Your current level</h2>
+        <p id="summaryDesc"></p>
+        <div class="bar"><div id="summaryFill" class="fill"></div></div>
+        <p id="summaryProgress"></p>
+        <div class="journey-stats">
+          <div class="stat"><div class="label">Started</div><div class="value" id="startVal">—</div></div>
+          <div class="stat"><div class="label">Today</div><div class="value" id="todayVal">—</div></div>
+          <div class="stat"><div class="label">Change</div><div class="value" id="changeVal">—</div></div>
+        </div>
+      </div>
 
-<div id="levels"></div>
+      <h2 class="section-title">Where are you today?</h2>
+      <p class="intro">Tap a level to expand it. Choose the one that feels most honest today. It is about how much tinnitus bothers you — not how loud it is.</p>
+      <div id="levelList"></div>
 
-<div id="current" class="current">
+      <div class="reminder">
+        <strong>The goal is not silence.</strong><br>
+        The goal is freedom — thinking about tinnitus less, checking it less, and living your life more.
+      </div>
+    </section>
 
-<h2 id="currentTitle"></h2>
+    <section id="pane-sound" class="pane">
+      <h2 class="section-title">Sound Therapy</h2>
+      <p class="intro">Use gentle masking or background sound. Keep it comfortable — audible, but not dominating.</p>
 
-<p id="currentDesc"></p>
+      <div class="sound-card">
+        <div class="field">
+          <label for="noiseType">Sound type</label>
+          <select id="noiseType">
+            <option value="pink" selected>Pink noise — softer</option>
+            <option value="white">White noise — brighter</option>
+            <option value="brown">Brown noise — deep and warm</option>
+            <option value="ocean">Ocean movement</option>
+          </select>
+        </div>
 
-<p id="currentReflection"></p>
+        <div class="field">
+          <label for="mins">Session length</label>
+          <select id="mins">
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60" selected>60 minutes</option>
+            <option value="90">90 minutes</option>
+          </select>
+        </div>
 
-<div class="progress">
+        <div class="field">
+          <label for="vol">Volume — usually just below tinnitus</label>
+          <div class="range-row">
+            <input id="vol" type="range" min="0" max="1" step="0.01" value="0.12">
+            <span class="rval" id="volOut">12%</span>
+          </div>
+          <p class="hint">Try not to chase a perfect setting. Comfortable and consistent is better.</p>
+        </div>
 
-<div>
-Started at:
-<strong id="startLevel"></strong>
-</div>
+        <div class="field">
+          <label for="moveDepth">Gentle movement</label>
+          <div class="range-row">
+            <input id="moveDepth" type="range" min="0" max="1" step="0.01" value="0.25">
+            <span class="rval" id="moveOut">25%</span>
+          </div>
+        </div>
+      </div>
 
-<div>
-Current:
-<strong id="currentLevel"></strong>
-</div>
+      <div class="sound-card">
+        <div class="two">
+          <div class="field">
+            <label for="notchOn">Optional notch</label>
+            <select id="notchOn">
+              <option value="off" selected>Off</option>
+              <option value="on">On</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="notchHz">Frequency</label>
+            <input id="notchHz" type="number" min="80" max="12000" step="10" value="6000">
+          </div>
+        </div>
+        <p class="hint">Experimental. Don't obsess over matching your tinnitus pitch.</p>
+      </div>
 
-<div>
-Improvement:
-<strong id="improvement"></strong>
-</div>
+      <div class="sound-card">
+        <div class="timer" id="timer">60:00</div>
+        <div class="status"><span id="statusDot" class="dot"></span><span id="statusText">Idle</span></div>
+        <div class="controls">
+          <button id="startBtn" class="btn btn-primary wide">▶ Start Sound</button>
+          <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
+          <button id="stopBtn" class="btn btn-secondary" disabled>Stop</button>
+        </div>
+        <p class="hint" id="soundHint">Suggested: 30–60 minutes a day, or use it gently in the background.</p>
+      </div>
+    </section>
+  </main>
 
-<div class="ladder" id="ladder"></div>
-
-</div>
-
-</div>
-
-<div class="footer">
-
-The goal is not to hear tinnitus less.<br>
-The goal is to think about tinnitus less.<br><br>
-
-Even loud tinnitus can become unimportant.
-
+  <div class="footer">Private on this device. No account. No upload.</div>
 </div>
 
 <script>
-
-const levels = [
-
-{
-id:1,
-emoji:"😟",
-title:"Stuck",
-desc:"Tinnitus dominates my life.",
-reflection:"Things can improve, even if it doesn't feel that way today."
-},
-
-{
-id:2,
-emoji:"😣",
-title:"Struggling",
-desc:"I spend a lot of time worrying about tinnitus.",
-reflection:"You are not failing. Habituation takes time."
-},
-
-{
-id:3,
-emoji:"😐",
-title:"Accepting",
-desc:"I'm beginning to believe I can adapt.",
-reflection:"Acceptance is often where recovery begins."
-},
-
-{
-id:4,
-emoji:"🙂",
-title:"Improving",
-desc:"Good days and bad days. Tinnitus no longer controls everything.",
-reflection:"Your brain is starting to treat tinnitus as less important."
-},
-
-{
-id:5,
-emoji:"😊",
-title:"Letting Go",
-desc:"I often forget about tinnitus.",
-reflection:"Forgetting about tinnitus is one of the strongest signs of recovery."
-},
-
-{
-id:6,
-emoji:"😎",
-title:"Empowered",
-desc:"It's there, but I rarely care about it.",
-reflection:"Many people think recovery means silence. Real recovery is not caring."
-},
-
-{
-id:7,
-emoji:"🕊️",
-title:"Liberated",
-desc:"Tinnitus is no longer a problem in my life.",
-reflection:"Life has become bigger than tinnitus."
-}
-
+const LEVELS=[
+  {id:1,emoji:"😟",title:"Stuck",short:"Tinnitus dominates my life.",desc:"Tinnitus feels like it has taken over. I feel trapped by it and struggle to imagine things improving.",reflect:"Things can improve, even if it does not feel that way today. Many people who now live well with tinnitus started here."},
+  {id:2,emoji:"😣",title:"Struggling",short:"I spend a lot of time worrying about it.",desc:"I spend a lot of time thinking about tinnitus and wishing it would go away. It feels frustrating and unfair.",reflect:"You are not failing. Habituation begins when you stop measuring every sound and start returning attention to life."},
+  {id:3,emoji:"😐",title:"Accepting",short:"I am beginning to believe I can adapt.",desc:"Tinnitus is still difficult, but I am starting to accept that I can change my relationship with it.",reflect:"Acceptance is not giving up. It is often the point where recovery really begins."},
+  {id:4,emoji:"🙂",title:"Improving",short:"Good days and bad days.",desc:"I still notice tinnitus, but it no longer controls every part of my life. I can see there are better moments.",reflect:"You are already further along than you think. Habituation means your brain is learning tinnitus is not important."},
+  {id:5,emoji:"😊",title:"Letting Go",short:"I often forget about tinnitus.",desc:"Tinnitus is becoming less important. I often forget about it for periods of time, even if it still comes and goes.",reflect:"Forgetting about tinnitus is one of the strongest signs of recovery."},
+  {id:6,emoji:"😎",title:"Empowered",short:"It is there, but I rarely care.",desc:"Tinnitus may still be there, but I do not really care about it anymore. I rarely check on it.",reflect:"Many people think recovery means silence. Real recovery is when you stop caring whether tinnitus is there or not."},
+  {id:7,emoji:"🕊️",title:"Liberated",short:"Tinnitus is no longer a problem.",desc:"Tinnitus no longer feels like a problem in my life. I focus on living rather than checking for the sound.",reflect:"Life has become bigger than tinnitus. This is the freedom many people are moving toward."}
 ];
-
-const container = document.getElementById("levels");
-
-levels.slice().reverse().forEach(level=>{
-
-const card=document.createElement("div");
-
-card.className="card";
-
-card.innerHTML=`
-<div class="level">${level.emoji} Level ${level.id} - ${level.title}</div>
-<div class="desc">${level.desc}</div>
-`;
-
-card.onclick=()=>selectLevel(level.id);
-
-container.appendChild(card);
-
-});
-
+const STORE="tim_mobile_journey_v1";
+const list=document.getElementById('levelList');
+const summary=document.getElementById('summary');
+let state=loadState();
+function loadState(){try{return JSON.parse(localStorage.getItem(STORE))||{start:null,current:null}}catch(e){return{start:null,current:null}}}
+function saveState(){localStorage.setItem(STORE,JSON.stringify(state))}
+function renderLevels(){
+  list.innerHTML='';
+  LEVELS.slice().reverse().forEach(l=>{
+    const card=document.createElement('article');
+    card.className='level-card'+(state.current===l.id?' selected':'');
+    card.dataset.id=l.id;
+    card.innerHTML=`
+      <button class="level-head" aria-expanded="false">
+        <span class="level-left">
+          <span class="emoji">${l.emoji}</span>
+          <span>
+            <span class="level-name">Level ${l.id} — ${l.title}</span>
+            <span class="level-short">${l.short}</span>
+          </span>
+        </span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="level-body">
+        <p>${l.desc}</p>
+        <div class="reflection">${l.reflect}</div>
+        <button class="pick">✓ This is me today</button>
+      </div>`;
+    list.appendChild(card);
+  });
+  addLevelEvents();
+  renderSummary();
+}
+function addLevelEvents(){
+  document.querySelectorAll('.level-card').forEach(card=>{
+    const head=card.querySelector('.level-head');
+    const pick=card.querySelector('.pick');
+    head.addEventListener('click',()=>{
+      const isOpen=card.classList.contains('open');
+      document.querySelectorAll('.level-card').forEach(c=>{c.classList.remove('open');c.querySelector('.level-head').setAttribute('aria-expanded','false')});
+      if(!isOpen){card.classList.add('open');head.setAttribute('aria-expanded','true')}
+    });
+    pick.addEventListener('click',()=>selectLevel(Number(card.dataset.id)));
+  });
+}
 function selectLevel(id){
-
-document.querySelectorAll(".card").forEach(c=>c.classList.remove("selected"));
-
-document.querySelectorAll(".card")[7-id].classList.add("selected");
-
-const level=levels.find(l=>l.id===id);
-
-document.getElementById("current").style.display="block";
-
-document.getElementById("currentTitle").innerHTML=
-`${level.emoji} Level ${level.id} - ${level.title}`;
-
-document.getElementById("currentDesc").innerHTML=
-level.desc;
-
-document.getElementById("currentReflection").innerHTML=
-level.reflection;
-
-let start=localStorage.getItem("timStart");
-
-if(!start){
-
-start=id;
-localStorage.setItem("timStart",id);
-
+  if(!state.start) state.start=id;
+  state.current=id;
+  saveState();
+  renderLevels();
+  const selected=document.querySelector(`.level-card[data-id="${id}"]`);
+  if(selected){selected.classList.add('open'); selected.querySelector('.level-head').setAttribute('aria-expanded','true');}
+  summary.scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-localStorage.setItem("timCurrent",id);
-
-document.getElementById("startLevel").innerHTML=
-start;
-
-document.getElementById("currentLevel").innerHTML=
-id;
-
-const diff=id-start;
-
-document.getElementById("improvement").innerHTML=
-(diff>0?"+":"")+diff+" levels";
-
-let ladder="";
-
-for(let i=7;i>=1;i--){
-
-if(i==id){
-
-ladder+=`<div class="you">${i} ← YOU</div>`;
-
-}else if(i==start){
-
-ladder+=`<div>${i} ← START</div>`;
-
-}else{
-
-ladder+=`<div>${i}</div>`;
-
+function renderSummary(){
+  if(!state.current){summary.classList.remove('show');return}
+  const l=LEVELS.find(x=>x.id===state.current);
+  summary.classList.add('show');
+  document.getElementById('summaryTitle').textContent=`${l.emoji} Level ${l.id} — ${l.title}`;
+  document.getElementById('summaryDesc').textContent=l.reflect;
+  document.getElementById('summaryFill').style.width=(l.id/7*100)+'%';
+  document.getElementById('summaryProgress').textContent=`Level ${l.id} of 7 — ${l.id<7?'keep going, it gets better':'you made it'}.`;
+  document.getElementById('startVal').textContent='Level '+state.start;
+  document.getElementById('todayVal').textContent='Level '+state.current;
+  const diff=state.current-state.start;
+  document.getElementById('changeVal').textContent=(diff>0?'+':'')+diff;
 }
-
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+tab).classList.add('active');
 }
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 
-document.getElementById("ladder").innerHTML=ladder;
-
+let audioCtx=null,noiseNode=null,masterGain=null,gainNode=null,notchFilter=null,amOsc=null,amGain=null;
+let isRunning=false,isPaused=false,timerInt=null,remain=3600;
+const vol=document.getElementById('vol'), move=document.getElementById('moveDepth'), mins=document.getElementById('mins');
+function pad(n){return String(n).padStart(2,'0')}
+function setTimer(){const m=Math.floor(remain/60),s=remain%60;document.getElementById('timer').textContent=pad(m)+':'+pad(s)}
+function setStatus(){
+  document.getElementById('startBtn').disabled=isRunning&&!isPaused;
+  document.getElementById('pauseBtn').disabled=!isRunning;
+  document.getElementById('stopBtn').disabled=!isRunning;
+  document.getElementById('pauseBtn').textContent=isPaused?'Resume':'Pause';
+  const dot=document.getElementById('statusDot');
+  dot.className='dot'+(isRunning?(isPaused?' pause':' on'):'');
+  document.getElementById('statusText').textContent=isRunning?(isPaused?'Paused':'Running'):'Idle';
 }
-
-const saved=localStorage.getItem("timCurrent");
-
-if(saved){
-
-selectLevel(parseInt(saved));
-
+function ensureAudio(){
+  if(audioCtx) return;
+  const AC=window.AudioContext||window.webkitAudioContext;
+  audioCtx=new AC();
+  masterGain=audioCtx.createGain(); masterGain.gain.value=Number(vol.value); masterGain.connect(audioCtx.destination);
+  notchFilter=audioCtx.createBiquadFilter(); notchFilter.type='notch'; notchFilter.frequency.value=Number(document.getElementById('notchHz').value); notchFilter.Q.value=18;
+  gainNode=audioCtx.createGain(); gainNode.gain.value=1;
+  amOsc=audioCtx.createOscillator(); amOsc.type='sine'; amOsc.frequency.value=0.12;
+  amGain=audioCtx.createGain(); amGain.gain.value=Number(move.value);
+  amOsc.connect(amGain); amGain.connect(gainNode.gain); amOsc.start();
 }
-
+function createNoise(type){
+  const node=audioCtx.createScriptProcessor(4096,1,1);
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0,last=0;
+  node.onaudioprocess=e=>{
+    const out=e.outputBuffer.getChannelData(0);
+    for(let i=0;i<out.length;i++){
+      const w=Math.random()*2-1;
+      if(type==='white') out[i]=w*.25;
+      else if(type==='pink'){
+        b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759; b2=.969*b2+w*.153852; b3=.8665*b3+w*.3104856; b4=.55*b4+w*.5329522; b5=-.7616*b5-w*.016898;
+        const p=b0+b1+b2+b3+b4+b5+b6+w*.5362; b6=w*.115926; out[i]=p*.11;
+      }else{
+        last=Math.min(1,Math.max(-1,last+(type==='brown'?.02:.018)*w));
+        out[i]=last*(type==='ocean'?0.8:0.9)+(type==='ocean'?w*.025:0);
+      }
+    }
+  };
+  return node;
+}
+function connectRouting(){
+  if(!noiseNode)return;
+  try{noiseNode.disconnect()}catch(e){} try{notchFilter.disconnect()}catch(e){} try{gainNode.disconnect()}catch(e){}
+  if(document.getElementById('notchOn').value==='on'){noiseNode.connect(notchFilter);notchFilter.connect(gainNode)} else noiseNode.connect(gainNode);
+  gainNode.connect(masterGain);
+}
+function updateAudio(){
+  document.getElementById('volOut').textContent=Math.round(Number(vol.value)*100)+'%';
+  document.getElementById('moveOut').textContent=Math.round(Number(move.value)*100)+'%';
+  if(!audioCtx)return;
+  masterGain.gain.value=Number(vol.value);
+  amGain.gain.value=Number(move.value);
+  notchFilter.frequency.value=Number(document.getElementById('notchHz').value)||6000;
+  if(isRunning)connectRouting();
+}
+function startSound(){
+  ensureAudio();
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  remain=Number(mins.value)*60; setTimer();
+  if(noiseNode){try{noiseNode.disconnect()}catch(e){} noiseNode=null}
+  noiseNode=createNoise(document.getElementById('noiseType').value);
+  connectRouting(); isRunning=true; isPaused=false;
+  if(timerInt)clearInterval(timerInt);
+  timerInt=setInterval(()=>{if(!isRunning||isPaused)return; remain=Math.max(0,remain-1); setTimer(); if(remain===0)stopSound(true)},1000);
+  document.getElementById('soundHint').textContent='Keep it comfortable — audible but not dominating.';
+  setStatus();
+}
+function pauseSound(){
+  if(!isRunning)return;
+  if(isPaused){audioCtx.resume();isPaused=false}else{audioCtx.suspend();isPaused=true}
+  setStatus();
+}
+function stopSound(done){
+  if(timerInt){clearInterval(timerInt);timerInt=null}
+  if(noiseNode){try{noiseNode.disconnect()}catch(e){} noiseNode.onaudioprocess=null; noiseNode=null}
+  isRunning=false; isPaused=false;
+  document.getElementById('soundHint').textContent=done?'Session complete. Return to life and try not to check.':'Stopped. Restart whenever useful.';
+  setStatus();
+}
+vol.addEventListener('input',updateAudio); move.addEventListener('input',updateAudio);
+['noiseType','notchOn','notchHz'].forEach(id=>document.getElementById(id).addEventListener('input',updateAudio));
+mins.addEventListener('change',()=>{if(!isRunning){remain=Number(mins.value)*60; setTimer()}});
+document.getElementById('startBtn').addEventListener('click',startSound);
+document.getElementById('pauseBtn').addEventListener('click',pauseSound);
+document.getElementById('stopBtn').addEventListener('click',()=>stopSound(false));
+renderLevels(); updateAudio(); setTimer(); setStatus();
 </script>
-
 </body>
 </html>
