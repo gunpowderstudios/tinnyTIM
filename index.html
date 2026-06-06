@@ -589,33 +589,17 @@ input[type=range]{
         <div class="hint">Adds a very slow rise and fall so the sound feels less static.</div>
       </div>
 
-      <div class="control">
-        <label for="notchOn">Optional notch filter</label>
-        <select id="notchOn">
-          <option value="off" selected>Off</option>
-          <option value="on">On</option>
-        </select>
-        <div class="hint">
-<p><strong>Optional Tinnitus Filter</strong></p>
-
-<p>This feature reduces a small part of the sound that matches your tinnitus pitch.</p>
-
-<p>For example, my tinnitus sounds like a very high-pitched hiss, so I would use a setting around 10,000 Hz.</p>
-
-<p>Not sure what your tinnitus pitch is?</p>
-
-<p>Try searching online for "My Tinnitus Notch" or "Tinnitus Pitch Matching". These free tools can help you estimate the frequency of your tinnitus.</p>
-
-<p>Some people find this helpful as part of sound therapy, while others notice little difference.</p>
-
-<p>Experimental — leave it switched off if you are unsure.</p>
-</div>
+      
+<div class="control">
+  <label>Sound Therapy Tip</label>
+  <div class="hint" style="font-size:14px;line-height:1.6;">
+    There is no perfect sound for tinnitus.<br><br>
+    Try Pink Noise, White Noise, Brown Noise or Ocean sounds and use whichever feels most comfortable.<br><br>
+    Most people prefer Pink Noise because it is softer and less harsh than White Noise.<br><br>
+    Keep the volume gentle and avoid turning it up to completely cover your tinnitus.
+  </div>
 </div>
 
-      <div class="control" id="notchWrap" style="display:none">
-        <label for="notchHz">Your tinnitus pitch (Hz)</label>
-        <input id="notchHz" type="number" min="80" max="12000" step="10" value="6000">
-      </div>
     </div>
 
     <div class="soft-card">
@@ -697,7 +681,7 @@ input[type=range]{
   </div>
 
   <div class="footer">
-  tinnyTIM v6.0<br>
+  tinnyTIM v6.1<br>
   This app is FREE to use and share. Your data is saved only on this device.
 </div>
 
@@ -904,9 +888,9 @@ const volume = document.getElementById("volume");
 const movement = document.getElementById("movement");
 const volumeOut = document.getElementById("volumeOut");
 const movementOut = document.getElementById("movementOut");
-const notchOn = document.getElementById("notchOn");
-const notchWrap = document.getElementById("notchWrap");
-const notchHz = document.getElementById("notchHz");
+
+
+
 
 function ensureAudio(){
   if(audioCtx) return;
@@ -920,8 +904,7 @@ function ensureAudio(){
 
   notchFilter = audioCtx.createBiquadFilter();
   notchFilter.type = "notch";
-  notchFilter.frequency.value = Number(notchHz.value);
-  notchFilter.Q.value = 18;
+    notchFilter.Q.value = 18;
 
   gainNode = audioCtx.createGain();
   gainNode.gain.value = 1;
@@ -995,14 +978,12 @@ function connectRouting(){
 function updateAudio(){
   volumeOut.textContent = Math.round(Number(volume.value)*100) + "%";
   movementOut.textContent = Math.round(Number(movement.value)*100) + "%";
-  notchWrap.style.display = notchOn.value === "on" ? "block" : "none";
-
+  
   if(!audioCtx) return;
 
   masterGain.gain.value = Number(volume.value);
   amGain.gain.value = Number(movement.value);
-  notchFilter.frequency.value = Number(notchHz.value);
-
+  
   if(isRunning){
     connectRouting();
   }
@@ -1107,7 +1088,7 @@ document.getElementById("startBtn").addEventListener("click", startSession);
 document.getElementById("pauseBtn").addEventListener("click", togglePause);
 document.getElementById("stopBtn").addEventListener("click", () => stopSession(false));
 
-[noiseType, volume, movement, notchOn, notchHz].forEach(el => {
+[noiseType, volume, movement].forEach(el => {
   el.addEventListener("input", updateAudio);
   el.addEventListener("change", updateAudio);
 });
