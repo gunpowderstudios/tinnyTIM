@@ -590,7 +590,18 @@ input[type=range]{
         <div class="hint">Adds a very slow rise and fall so the sound feels less static.</div>
       </div>
 
-      <div class="control">
+      
+<div class="control">
+<label>Sound Therapy Tip</label>
+<div class="hint" style="font-size:14px;line-height:1.6;">
+There is no perfect sound for tinnitus.<br><br>
+Try Pink Noise, White Noise, Brown Noise, Ocean or Rain and use whichever feels most comfortable.<br><br>
+Most people prefer Pink Noise because it is softer and less harsh than White Noise.
+</div>
+</div>
+
+<div class="control" style="display:none;">
+
         <label for="notchOn">Optional notch filter</label>
         <select id="notchOn">
           <option value="off" selected>Off</option>
@@ -698,7 +709,7 @@ input[type=range]{
   </div>
 
   <div class="footer">
-  tinnyTIM v6.2<br>
+  tinnyTIM v6.3<br>
   This app is FREE to use and share. Your data is saved only on this device.
 </div>
 
@@ -1115,9 +1126,20 @@ document.getElementById("startBtn").addEventListener("click", startSession);
 document.getElementById("pauseBtn").addEventListener("click", togglePause);
 document.getElementById("stopBtn").addEventListener("click", () => stopSession(false));
 
-[noiseType, volume, movement, notchOn, notchHz].forEach(el => {
+[volume, movement, notchOn, notchHz].forEach(el => {
   el.addEventListener("input", updateAudio);
   el.addEventListener("change", updateAudio);
+});
+
+noiseType.addEventListener("change", () => {
+  if(!isRunning) return;
+
+  try{
+    noiseNode.disconnect();
+  }catch(e){}
+
+  noiseNode = createNoise(noiseType.value);
+  connectRouting();
 });
 
 const dailyTips = [
