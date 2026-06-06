@@ -568,6 +568,7 @@ input[type=range]{
           <option value="white">White noise — brighter</option>
           <option value="brown">Brown noise — deeper</option>
           <option value="ocean">Ocean movement</option>
+          <option value="rain">Rain shower</option>
         </select>
       </div>
 
@@ -590,16 +591,6 @@ input[type=range]{
       </div>
 
       <div class="control">
-        <label>Sound Therapy Tip</label>
-        <div class="hint" style="font-size:14px;line-height:1.6;">
-          There is no perfect sound for tinnitus.<br><br>
-          Try Pink Noise, White Noise, Brown Noise or Ocean sounds and use whichever feels most comfortable.<br><br>
-          Most people prefer Pink Noise because it is softer and less harsh than White Noise.<br><br>
-          Keep the volume gentle and avoid turning it up to completely cover your tinnitus.
-        </div>
-      </div>
-
-      <div class="control" style="display:none;">
         <label for="notchOn">Optional notch filter</label>
         <select id="notchOn">
           <option value="off" selected>Off</option>
@@ -707,7 +698,7 @@ input[type=range]{
   </div>
 
   <div class="footer">
-  tinnyTIM v6.1<br>
+  tinnyTIM v6.2<br>
   This app is FREE to use and share. Your data is saved only on this device.
 </div>
 
@@ -973,6 +964,13 @@ function createNoise(type){
       }else if(type === "brown"){
         last = Math.max(-1, Math.min(1, last + 0.02*w));
         out[i] = last * 0.9;
+      }else if(type === "rain"){
+        const drop = Math.random();
+        if(drop > 0.995){
+          out[i] = (Math.random()*2-1) * 0.8;
+        }else{
+          out[i] = w * 0.08;
+        }
       }else{
         oceanPhase += 0.00003;
         const swell = 0.35 + 0.65 * ((Math.sin(oceanPhase) + 1) / 2);
